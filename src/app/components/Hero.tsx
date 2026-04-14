@@ -201,29 +201,28 @@ export const Hero = () => {
         }
 
         @keyframes tempo-eq-pulse {
-          0%, 100% { transform: scaleY(0.38); }
-          50% { transform: scaleY(1); }
+          0%, 100% { transform: scaleX(0.38); }
+          50% { transform: scaleX(1); }
         }
         .tempo-eq-bar {
           display: block;
-          width: 2px;
-          border-radius: 1px;
+          height: 1px;
           background-color: white;
-          transform-origin: bottom center;
+          transform-origin: right center;
           animation: tempo-eq-pulse 2.8s ease-in-out infinite;
         }
         .tempo-eq-bar--1 {
-          height: 14px;
+          width: 100%;
           animation-duration: 2.6s;
           animation-delay: 0s;
         }
         .tempo-eq-bar--2 {
-          height: 10px;
+          width: 55%;
           animation-duration: 3.2s;
           animation-delay: 0.45s;
         }
         .tempo-eq-bar--3 {
-          height: 14px;
+          width: 100%;
           animation-duration: 2.9s;
           animation-delay: 0.85s;
         }
@@ -240,7 +239,7 @@ export const Hero = () => {
         <button
           type="button"
           aria-label="Menu"
-          className="text-white hover:opacity-80 transition-opacity cursor-pointer flex items-end justify-center gap-[3px] h-[14px] w-7"
+          className="text-white hover:opacity-80 transition-opacity cursor-pointer flex flex-col justify-between items-end w-7 h-[14px]"
         >
           <span className="tempo-eq-bar tempo-eq-bar--1" />
           <span className="tempo-eq-bar tempo-eq-bar--2" />
