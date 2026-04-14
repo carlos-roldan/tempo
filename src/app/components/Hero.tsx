@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from './Button';
 
 const CATEGORY_TAGS = {
@@ -11,11 +11,43 @@ const CATEGORY_TAGS = {
 
 type Category = keyof typeof CATEGORY_TAGS;
 
+const CATEGORY_VIDEOS: Record<Category, string> = {
+  Restorative: '/assets/hero/restorative.mp4',
+  Adventurous: '/assets/hero/adventurous.mp4',
+  Spiritual: '/assets/hero/spiritual.mp4',
+  Romantic: '/assets/hero/romantic.mp4',
+  Cultural: '/assets/hero/cultural.mp4',
+};
+
 export const Hero = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeCategory, setActiveCategory] = useState<Category>('Restorative');
+  const [currentVideo, setCurrentVideo] = useState(CATEGORY_VIDEOS.Restorative);
+  const [incomingVideo, setIncomingVideo] = useState<string | null>(null);
+  const [isCrossfading, setIsCrossfading] = useState(false);
 
   const currentTags = CATEGORY_TAGS[activeCategory];
+
+  useEffect(() => {
+    if (!incomingVideo) return undefined;
+
+    const timer = window.setTimeout(() => {
+      setCurrentVideo(incomingVideo);
+      setIncomingVideo(null);
+      setIsCrossfading(false);
+    }, 800);
+
+    return () => window.clearTimeout(timer);
+  }, [incomingVideo]);
+
+  const handleCategorySelect = (category: Category) => {
+    if (category === activeCategory) return;
+
+    const nextVideo = CATEGORY_VIDEOS[category];
+    setActiveCategory(category);
+    setIncomingVideo(nextVideo);
+    setIsCrossfading(true);
+  };
 
   return (
     <section 
@@ -78,17 +110,35 @@ export const Hero = () => {
         </button>
       </nav>
 
-      {/* Background Image Layer */}
+      {/* Background Video Layer */}
       <div 
         id="background-image-container"
         className="absolute inset-0 w-full h-full pointer-events-none"
       >
-        <img 
-          id="background-image"
-          src="https://images.unsplash.com/photo-1754221716114-422cef2e8571?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZWVwJTIwZ29sZGVuJTIwaG91ciUyMGFtYmVyJTIwY29hc3RhbCUyMHBvcnR1Z2FsfGVufDF8fHx8MTc3NjEyMTkwMXww&ixlib=rb-4.1.0&q=80&w=2000"
-          alt="Deep golden hour coastal path"
-          className="w-full h-full object-cover object-center"
+        <video
+          id="background-video-current"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[800ms] ${
+            isCrossfading ? 'opacity-0' : 'opacity-100'
+          }`}
+          src={currentVideo}
         />
+        {incomingVideo && (
+          <video
+            id="background-video-incoming"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[800ms] ${
+              isCrossfading ? 'opacity-100' : 'opacity-0'
+            }`}
+            src={incomingVideo}
+          />
+        )}
         {/* Dark warm overlay to ensure WCAG AA readability */}
         <div 
           id="background-overlay"
@@ -169,7 +219,7 @@ export const Hero = () => {
                   {(Object.keys(CATEGORY_TAGS) as Category[]).map(cat => (
                     <button 
                       key={cat}
-                      onClick={() => setActiveCategory(cat)}
+                      onClick={() => handleCategorySelect(cat)}
                       className={`text-sm md:text-base font-light tracking-wide cursor-pointer transition-all pb-0.5 border-b ${
                         activeCategory === cat 
                           ? 'border-white/100 text-white' 

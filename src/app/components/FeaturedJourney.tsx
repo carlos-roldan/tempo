@@ -26,7 +26,7 @@ export const FeaturedJourney = () => {
       >
         <img 
           id="featured-bg-image"
-          src="https://images.unsplash.com/photo-1768091873026-aa52e2517d48?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaW5lbWF0aWMlMjBjb2FzdGFsJTIwY2xpZmZzJTIwYW5jaWVudCUyMHN0b25lfGVufDF8fHx8MTc3NjE3OTEwNXww&ixlib=rb-4.1.0&q=80&w=2000"
+          src="/assets/journey/iberian-pilgrimage.png"
           alt="Cinematic ancient stone and coastal cliffs"
           className="w-full h-full object-cover object-center"
         />
