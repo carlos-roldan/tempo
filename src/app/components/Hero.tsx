@@ -199,6 +199,34 @@ export const Hero = () => {
           from { opacity: 0; transform: translateY(-4px); }
           to { opacity: 1; transform: translateY(0); }
         }
+
+        @keyframes tempo-eq-pulse {
+          0%, 100% { transform: scaleY(0.38); }
+          50% { transform: scaleY(1); }
+        }
+        .tempo-eq-bar {
+          display: block;
+          width: 2px;
+          border-radius: 1px;
+          background-color: white;
+          transform-origin: bottom center;
+          animation: tempo-eq-pulse 2.8s ease-in-out infinite;
+        }
+        .tempo-eq-bar--1 {
+          height: 14px;
+          animation-duration: 2.6s;
+          animation-delay: 0s;
+        }
+        .tempo-eq-bar--2 {
+          height: 10px;
+          animation-duration: 3.2s;
+          animation-delay: 0.45s;
+        }
+        .tempo-eq-bar--3 {
+          height: 14px;
+          animation-duration: 2.9s;
+          animation-delay: 0.85s;
+        }
       `}</style>
 
       {/* Nav Layer */}
@@ -209,10 +237,14 @@ export const Hero = () => {
         >
           tempo
         </div>
-        <button className="text-white hover:opacity-80 transition-opacity cursor-pointer flex flex-col justify-between items-end w-7 h-[14px]">
-          <span className="w-full h-px bg-white rounded-none"></span>
-          <span className="w-[55%] h-px bg-white rounded-none"></span>
-          <span className="w-full h-px bg-white rounded-none"></span>
+        <button
+          type="button"
+          aria-label="Menu"
+          className="text-white hover:opacity-80 transition-opacity cursor-pointer flex items-end justify-center gap-[3px] h-[14px] w-7"
+        >
+          <span className="tempo-eq-bar tempo-eq-bar--1" />
+          <span className="tempo-eq-bar tempo-eq-bar--2" />
+          <span className="tempo-eq-bar tempo-eq-bar--3" />
         </button>
       </nav>
 
