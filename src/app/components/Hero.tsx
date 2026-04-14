@@ -220,9 +220,14 @@ export const Hero = () => {
           src={videoSources[1]}
         />
         <div
-          className={`absolute inset-0 bg-black transition-opacity duration-[2000ms] ${
-            isLoopTransitioning ? 'opacity-100' : 'opacity-0'
-          }`}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: 'black',
+            opacity: isLoopTransitioning ? 1 : 0,
+            transition: 'opacity 2s ease-in-out',
+            pointerEvents: 'none',
+          }}
         />
         {/* Dark warm overlay to ensure WCAG AA readability */}
         <div 
