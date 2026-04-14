@@ -390,12 +390,13 @@ export const Hero = () => {
                     <button 
                       key={cat}
                       onClick={() => handleCategorySelect(cat)}
-                      className={`text-sm md:text-base font-light tracking-wide cursor-pointer transition-all pb-0.5 border-b ${
+                      className={`text-sm md:text-base font-light tracking-wide cursor-pointer transition-all px-4 py-1 rounded-full border ${
                         activeCategory === cat 
-                          ? 'border-white/100 text-white' 
-                          : 'border-transparent text-white/60 hover:text-white hover:border-white/60'
+                          ? 'text-white border-[#C9973A]' 
+                          : 'text-white border-white/70 bg-transparent hover:border-white'
                       }`}
                       style={{ 
+                        backgroundColor: activeCategory === cat ? '#C9973A' : 'transparent',
                         fontFamily: "'DM Sans', sans-serif"
                       }}
                     >
