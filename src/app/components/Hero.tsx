@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from './Button';
 
 const CATEGORY_TAGS = {
@@ -22,32 +22,97 @@ const CATEGORY_VIDEOS: Record<Category, string> = {
 export const Hero = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeCategory, setActiveCategory] = useState<Category>('Restorative');
-  const [currentVideo, setCurrentVideo] = useState(CATEGORY_VIDEOS.Restorative);
-  const [incomingVideo, setIncomingVideo] = useState<string | null>(null);
+  const [videoSources, setVideoSources] = useState<[string, string]>([
+    CATEGORY_VIDEOS.Restorative,
+    CATEGORY_VIDEOS.Restorative,
+  ]);
+  const [activeLayer, setActiveLayer] = useState<0 | 1>(0);
   const [isCrossfading, setIsCrossfading] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isLoopTransitioning, setIsLoopTransitioning] = useState(false);
+  const videoRefs = useRef<[HTMLVideoElement | null, HTMLVideoElement | null]>([null, null]);
+  const loopTimersRef = useRef<number[]>([]);
 
   const currentTags = CATEGORY_TAGS[activeCategory];
 
   useEffect(() => {
-    if (!incomingVideo) return undefined;
+    const preloader = document.createElement('video');
+    preloader.src = CATEGORY_VIDEOS.Restorative;
+    preloader.preload = 'auto';
+    preloader.muted = true;
+    preloader.playsInline = true;
+    preloader.load();
+  }, []);
 
+  useEffect(() => {
+    const activeVideo = videoRefs.current[activeLayer];
+    if (!activeVideo) return;
+    if (isPaused) {
+      videoRefs.current[0]?.pause();
+      videoRefs.current[1]?.pause();
+      return;
+    }
+    void activeVideo.play();
+  }, [activeLayer, isPaused, videoSources]);
+
+  useEffect(() => {
+    if (!isCrossfading) return undefined;
     const timer = window.setTimeout(() => {
-      setCurrentVideo(incomingVideo);
-      setIncomingVideo(null);
+      const inactiveLayer = activeLayer === 0 ? 1 : 0;
+      videoRefs.current[inactiveLayer]?.pause();
       setIsCrossfading(false);
     }, 800);
 
     return () => window.clearTimeout(timer);
-  }, [incomingVideo]);
+  }, [activeLayer, isCrossfading]);
+
+  useEffect(() => {
+    return () => {
+      loopTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    };
+  }, []);
 
   const handleCategorySelect = (category: Category) => {
     if (category === activeCategory) return;
 
     const nextVideo = CATEGORY_VIDEOS[category];
-    if (nextVideo === currentVideo || nextVideo === incomingVideo) return;
+    if (nextVideo === videoSources[activeLayer]) return;
+    const inactiveLayer = activeLayer === 0 ? 1 : 0;
+
+    if (videoSources[inactiveLayer] !== nextVideo) {
+      setVideoSources((prev) => {
+        const next: [string, string] = [...prev] as [string, string];
+        next[inactiveLayer] = nextVideo;
+        return next;
+      });
+    }
+
     setActiveCategory(category);
-    setIncomingVideo(nextVideo);
     setIsCrossfading(true);
+    setActiveLayer(inactiveLayer);
+  };
+
+  const handleVideoEnded = (layer: 0 | 1) => {
+    if (layer !== activeLayer || isPaused) return;
+    const video = videoRefs.current[layer];
+    if (!video) return;
+
+    setIsLoopTransitioning(true);
+    const restartTimer = window.setTimeout(() => {
+      video.currentTime = 0;
+      if (!isPaused) {
+        void video.play();
+      }
+      const fadeInTimer = window.setTimeout(() => {
+        setIsLoopTransitioning(false);
+      }, 220);
+      loopTimersRef.current.push(fadeInTimer);
+    }, 220);
+    loopTimersRef.current.push(restartTimer);
+  };
+
+  const handleTogglePlayback = () => {
+    setIsPaused((prev) => !prev);
   };
 
   return (
@@ -117,29 +182,40 @@ export const Hero = () => {
         className="absolute inset-0 w-full h-full pointer-events-none"
       >
         <video
-          id="background-video-current"
+          id="background-video-layer-0"
+          ref={(el) => {
+            videoRefs.current[0] = el;
+          }}
           autoPlay
           muted
-          loop
+          preload="auto"
           playsInline
+          onEnded={() => handleVideoEnded(0)}
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[800ms] ${
-            isCrossfading ? 'opacity-0' : 'opacity-100'
+            activeLayer === 0 ? 'opacity-100' : 'opacity-0'
           }`}
-          src={currentVideo}
+          src={videoSources[0]}
         />
-        {incomingVideo && (
-          <video
-            id="background-video-incoming"
-            autoPlay
-            muted
-            loop
-            playsInline
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[800ms] ${
-              isCrossfading ? 'opacity-100' : 'opacity-0'
-            }`}
-            src={incomingVideo}
-          />
-        )}
+        <video
+          id="background-video-layer-1"
+          ref={(el) => {
+            videoRefs.current[1] = el;
+          }}
+          autoPlay
+          muted
+          preload="auto"
+          playsInline
+          onEnded={() => handleVideoEnded(1)}
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[800ms] ${
+            activeLayer === 1 ? 'opacity-100' : 'opacity-0'
+          }`}
+          src={videoSources[1]}
+        />
+        <div
+          className={`absolute inset-0 bg-black transition-opacity duration-300 ${
+            isLoopTransitioning ? 'opacity-35' : 'opacity-0'
+          }`}
+        />
         {/* Dark warm overlay to ensure WCAG AA readability */}
         <div 
           id="background-overlay"
@@ -149,6 +225,22 @@ export const Hero = () => {
           }} 
         />
       </div>
+
+      <button
+        type="button"
+        onClick={handleTogglePlayback}
+        aria-label={isPaused ? 'Play hero video' : 'Pause hero video'}
+        className="absolute bottom-4 right-4 z-30 w-11 h-11 flex items-center justify-center text-white/70 hover:text-white transition-opacity"
+      >
+        {isPaused ? (
+          <span className="text-xl leading-none">▶</span>
+        ) : (
+          <span className="flex items-center gap-1">
+            <span className="w-1 h-4 bg-white/90" />
+            <span className="w-1 h-4 bg-white/90" />
+          </span>
+        )}
+      </button>
 
       {/* Content Container Layer */}
       <div 
