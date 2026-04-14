@@ -104,7 +104,7 @@ export const Hero = () => {
       if (!isPaused) {
         void video.play();
       }
-    }, 220);
+    }, 2000);
     loopTimersRef.current.push(restartTimer);
   };
 
@@ -209,7 +209,7 @@ export const Hero = () => {
           src={videoSources[1]}
         />
         <div
-          className={`absolute inset-0 bg-black transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-black transition-opacity duration-[2000ms] ${
             isLoopTransitioning ? 'opacity-35' : 'opacity-0'
           }`}
         />
