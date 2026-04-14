@@ -39,7 +39,7 @@ export const Hero = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [isLoopTransitioning, setIsLoopTransitioning] = useState(false);
   const [isPosterVisible, setIsPosterVisible] = useState(true);
-  const [activeFeelingIndex, setActiveFeelingIndex] = useState(0);
+  const [activeFeelingIndex, setActiveFeelingIndex] = useState<number | null>(null);
   const videoRefs = useRef<[HTMLVideoElement | null, HTMLVideoElement | null]>([null, null]);
   const loopTimersRef = useRef<number[]>([]);
   const loopFadeStartedRef = useRef<[boolean, boolean]>([false, false]);
@@ -109,7 +109,7 @@ export const Hero = () => {
     }
 
     setActiveCategory(category);
-    setActiveFeelingIndex(0);
+    setActiveFeelingIndex(null);
     setIsCrossfading(true);
     setActiveLayer(inactiveLayer);
   };
