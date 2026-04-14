@@ -44,6 +44,7 @@ export const Hero = () => {
     if (category === activeCategory) return;
 
     const nextVideo = CATEGORY_VIDEOS[category];
+    if (nextVideo === currentVideo || nextVideo === incomingVideo) return;
     setActiveCategory(category);
     setIncomingVideo(nextVideo);
     setIsCrossfading(true);
@@ -54,7 +55,7 @@ export const Hero = () => {
       id="hero-section"
       className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-start pt-[20vh] md:pt-[25vh] font-['DM_Sans',sans-serif]"
       style={{ 
-        backgroundColor: 'var(--bg\\/primary)',
+        backgroundColor: 'rgb(28, 20, 16)',
         fontFamily: "'DM Sans', sans-serif"
       }}
     >
