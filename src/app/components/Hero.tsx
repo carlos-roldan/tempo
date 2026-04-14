@@ -100,13 +100,10 @@ export const Hero = () => {
     setIsLoopTransitioning(true);
     const restartTimer = window.setTimeout(() => {
       video.currentTime = 0;
+      setIsLoopTransitioning(false);
       if (!isPaused) {
         void video.play();
       }
-      const fadeInTimer = window.setTimeout(() => {
-        setIsLoopTransitioning(false);
-      }, 220);
-      loopTimersRef.current.push(fadeInTimer);
     }, 220);
     loopTimersRef.current.push(restartTimer);
   };
@@ -230,15 +227,35 @@ export const Hero = () => {
         type="button"
         onClick={handleTogglePlayback}
         aria-label={isPaused ? 'Play hero video' : 'Pause hero video'}
-        className="absolute bottom-4 right-4 z-30 w-11 h-11 flex items-center justify-center text-white/70 hover:text-white transition-opacity"
+        className="absolute bottom-4 right-4 z-30 w-11 h-11 flex items-center justify-center cursor-pointer text-white/50 hover:text-white/90 transition-colors"
       >
         {isPaused ? (
-          <span className="text-xl leading-none">▶</span>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M8 6 L18 12 L8 18 Z" />
+          </svg>
         ) : (
-          <span className="flex items-center gap-1">
-            <span className="w-1 h-4 bg-white/90" />
-            <span className="w-1 h-4 bg-white/90" />
-          </span>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <rect x="7" y="5.5" width="3" height="13" rx="0.5" />
+            <rect x="14" y="5.5" width="3" height="13" rx="0.5" />
+          </svg>
         )}
       </button>
 
