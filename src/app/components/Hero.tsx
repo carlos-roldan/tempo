@@ -39,6 +39,7 @@ export const Hero = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [isLoopTransitioning, setIsLoopTransitioning] = useState(false);
   const [isPosterVisible, setIsPosterVisible] = useState(true);
+  const [activeFeelingIndex, setActiveFeelingIndex] = useState(0);
   const videoRefs = useRef<[HTMLVideoElement | null, HTMLVideoElement | null]>([null, null]);
   const loopTimersRef = useRef<number[]>([]);
   const loopFadeStartedRef = useRef<[boolean, boolean]>([false, false]);
@@ -108,6 +109,7 @@ export const Hero = () => {
     }
 
     setActiveCategory(category);
+    setActiveFeelingIndex(0);
     setIsCrossfading(true);
     setActiveLayer(inactiveLayer);
   };
@@ -176,7 +178,7 @@ export const Hero = () => {
         .tempo-feeling-tag {
           transition: all 0.3s ease;
         }
-        .tempo-feeling-tag:hover, .tempo-feeling-tag.active {
+        .tempo-feeling-tag:hover:not(.tempo-feeling-tag--selected) {
           border-color: white !important;
           background-color: rgba(255, 255, 255, 0.2) !important;
         }
@@ -355,19 +357,27 @@ export const Hero = () => {
             
             {/* Primary Row: Feelings */}
             <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4 w-full z-10 mb-4 md:mb-5">
-              {currentTags.map((tag) => (
+              {currentTags.map((tag, idx) => {
+                const isSelected = activeFeelingIndex === idx;
+                return (
                 <button
                   key={tag}
-                  className="tempo-feeling-tag px-6 py-2.5 rounded-full text-sm md:text-base tracking-wide border bg-white/10 hover:bg-white/20 backdrop-blur-md cursor-pointer"
+                  type="button"
+                  onClick={() => setActiveFeelingIndex(idx)}
+                  className={`tempo-feeling-tag px-6 py-2.5 rounded-full text-sm md:text-base tracking-wide border backdrop-blur-md cursor-pointer ${
+                    isSelected ? 'tempo-feeling-tag--selected' : 'bg-transparent'
+                  }`}
                   style={{ 
                     color: 'white', 
-                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                    borderColor: isSelected ? '#C9973A' : 'rgba(255, 255, 255, 0.3)',
+                    backgroundColor: isSelected ? '#C9973A' : 'transparent',
                     fontFamily: "'DM Sans', sans-serif"
                   }}
                 >
                   {tag}
                 </button>
-              ))}
+                );
+              })}
             </div>
 
             {/* Secondary Row / Link Area - Reserved height area */}
@@ -390,13 +400,12 @@ export const Hero = () => {
                     <button 
                       key={cat}
                       onClick={() => handleCategorySelect(cat)}
-                      className={`text-sm md:text-base font-light tracking-wide cursor-pointer transition-all px-4 py-1 rounded-full border ${
+                      className={`text-sm md:text-base font-light tracking-wide cursor-pointer transition-all pb-0.5 border-b ${
                         activeCategory === cat 
-                          ? 'text-white border-[#C9973A]' 
-                          : 'text-white border-white/70 bg-transparent hover:border-white'
+                          ? 'border-white/100 text-white' 
+                          : 'border-transparent text-white/60 hover:text-white hover:border-white/60'
                       }`}
                       style={{ 
-                        backgroundColor: activeCategory === cat ? '#C9973A' : 'transparent',
                         fontFamily: "'DM Sans', sans-serif"
                       }}
                     >
