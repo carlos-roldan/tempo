@@ -221,7 +221,7 @@ export const Hero = () => {
         />
         <div
           className={`absolute inset-0 bg-black transition-opacity duration-[2000ms] ${
-            isLoopTransitioning ? 'opacity-35' : 'opacity-0'
+            isLoopTransitioning ? 'opacity-100' : 'opacity-0'
           }`}
         />
         {/* Dark warm overlay to ensure WCAG AA readability */}
