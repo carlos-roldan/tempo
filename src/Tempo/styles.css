@@ -1,0 +1,38 @@
+:root {
+  --nuetral\/50: #FAFAF8;
+  --nuetral\/100: #F5F0E8;
+  --nuetral\/200: #E8DDD0;
+  --nuetral\/400: #A89880;
+  --nuetral\/600: #6B5744;
+  --nuetral\/900: #1C1410;
+  --nuetral\/white: #FFF;
+  --gold\/100: #FDF3DC;
+  --gold\/300: #F0C96B;
+  --gold\/500: #C9973A;
+  --gold\/700: #8B6420;
+  --slate\/400: #8C9AAB;
+  --slate\/600: #4A5568;
+  --slate\/900: #1A202C;
+  --bg\/primary: var(--nuetral\/white);
+  --bg\/secondary: var(--nuetral\/50);
+  --bg\/warm: var(--nuetral\/100);
+  --bg\/inverse: var(--nuetral\/900);
+  --text\/primary: var(--nuetral\/900);
+  --text\/secondary: var(--nuetral\/600);
+  --text\/placeholder: var(--nuetral\/400);
+  --text\/inverse: var(--nuetral\/white);
+  --border\/default: var(--nuetral\/200);
+  --accent\/default: var(--gold\/500);
+  --accent\/hover: var(--gold\/700);
+  --accent\/subtle: var(--gold\/100);
+  --spacing\/1: 4;
+  --spacing\/2: 8;
+  --spacing\/3: 12;
+  --spacing\/4: 16;
+  --spacing\/6: 24;
+  --spacing\/8: 32;
+  --spacing\/12: 48;
+  --spacing\/16: 64;
+  --spacing\/20: 80;
+}
+
