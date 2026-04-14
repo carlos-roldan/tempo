@@ -32,6 +32,7 @@ export const Hero = () => {
   const [isLoopTransitioning, setIsLoopTransitioning] = useState(false);
   const videoRefs = useRef<[HTMLVideoElement | null, HTMLVideoElement | null]>([null, null]);
   const loopTimersRef = useRef<number[]>([]);
+  const loopFadeStartedRef = useRef<[boolean, boolean]>([false, false]);
 
   const currentTags = CATEGORY_TAGS[activeCategory];
 
@@ -92,20 +93,28 @@ export const Hero = () => {
     setActiveLayer(inactiveLayer);
   };
 
+  const handleVideoTimeUpdate = (layer: 0 | 1) => {
+    if (layer !== activeLayer || isPaused) return;
+    const video = videoRefs.current[layer];
+    if (!video || !video.duration || loopFadeStartedRef.current[layer]) return;
+
+    if (video.currentTime >= Math.max(video.duration - 2, 0)) {
+      loopFadeStartedRef.current[layer] = true;
+      setIsLoopTransitioning(true);
+    }
+  };
+
   const handleVideoEnded = (layer: 0 | 1) => {
     if (layer !== activeLayer || isPaused) return;
     const video = videoRefs.current[layer];
     if (!video) return;
 
-    setIsLoopTransitioning(true);
-    const restartTimer = window.setTimeout(() => {
-      video.currentTime = 0;
-      setIsLoopTransitioning(false);
-      if (!isPaused) {
-        void video.play();
-      }
-    }, 2000);
-    loopTimersRef.current.push(restartTimer);
+    video.currentTime = 0;
+    loopFadeStartedRef.current[layer] = false;
+    setIsLoopTransitioning(false);
+    if (!isPaused) {
+      void video.play();
+    }
   };
 
   const handleTogglePlayback = () => {
@@ -187,6 +196,7 @@ export const Hero = () => {
           muted
           preload="auto"
           playsInline
+          onTimeUpdate={() => handleVideoTimeUpdate(0)}
           onEnded={() => handleVideoEnded(0)}
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[800ms] ${
             activeLayer === 0 ? 'opacity-100' : 'opacity-0'
@@ -202,6 +212,7 @@ export const Hero = () => {
           muted
           preload="auto"
           playsInline
+          onTimeUpdate={() => handleVideoTimeUpdate(1)}
           onEnded={() => handleVideoEnded(1)}
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[800ms] ${
             activeLayer === 1 ? 'opacity-100' : 'opacity-0'
