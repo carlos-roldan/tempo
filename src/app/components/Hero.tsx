@@ -19,6 +19,14 @@ const CATEGORY_VIDEOS: Record<Category, string> = {
   Cultural: '/assets/hero/cultural.mp4',
 };
 
+const CATEGORY_POSTERS: Record<Category, string> = {
+  Restorative: '/assets/posters/restorative.jpg',
+  Adventurous: '/assets/posters/adventurous.jpg',
+  Spiritual: '/assets/posters/spiritual.jpg',
+  Romantic: '/assets/posters/romantic.jpg',
+  Cultural: '/assets/posters/cultural.jpg',
+};
+
 export const Hero = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeCategory, setActiveCategory] = useState<Category>('Restorative');
@@ -30,6 +38,7 @@ export const Hero = () => {
   const [isCrossfading, setIsCrossfading] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isLoopTransitioning, setIsLoopTransitioning] = useState(false);
+  const [isPosterVisible, setIsPosterVisible] = useState(true);
   const videoRefs = useRef<[HTMLVideoElement | null, HTMLVideoElement | null]>([null, null]);
   const loopTimersRef = useRef<number[]>([]);
   const loopFadeStartedRef = useRef<[boolean, boolean]>([false, false]);
@@ -37,12 +46,22 @@ export const Hero = () => {
   const currentTags = CATEGORY_TAGS[activeCategory];
 
   useEffect(() => {
-    const preloader = document.createElement('video');
-    preloader.src = CATEGORY_VIDEOS.Restorative;
-    preloader.preload = 'auto';
-    preloader.muted = true;
-    preloader.playsInline = true;
-    preloader.load();
+    const preloaders = (Object.values(CATEGORY_VIDEOS) as string[]).map((src) => {
+      const preloader = document.createElement('video');
+      preloader.src = src;
+      preloader.preload = 'auto';
+      preloader.muted = true;
+      preloader.playsInline = true;
+      preloader.load();
+      return preloader;
+    });
+
+    return () => {
+      preloaders.forEach((preloader) => {
+        preloader.removeAttribute('src');
+        preloader.load();
+      });
+    };
   }, []);
 
   useEffect(() => {
@@ -121,6 +140,19 @@ export const Hero = () => {
     setIsPaused((prev) => !prev);
   };
 
+  const getPosterForVideo = (videoSrc: string) => {
+    const matchedCategory = (Object.keys(CATEGORY_VIDEOS) as Category[]).find(
+      (category) => CATEGORY_VIDEOS[category] === videoSrc,
+    );
+    return matchedCategory ? CATEGORY_POSTERS[matchedCategory] : CATEGORY_POSTERS.Restorative;
+  };
+
+  const handleVideoCanPlayThrough = (layer: 0 | 1) => {
+    if (layer === activeLayer) {
+      setIsPosterVisible(false);
+    }
+  };
+
   return (
     <section 
       id="hero-section"
@@ -187,6 +219,14 @@ export const Hero = () => {
         id="background-image-container"
         className="absolute inset-0 w-full h-full pointer-events-none"
       >
+        <img
+          id="background-poster-image"
+          src={CATEGORY_POSTERS.Restorative}
+          alt="Restorative poster background"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[1500ms] ${
+            isPosterVisible ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
         <video
           id="background-video-layer-0"
           ref={(el) => {
@@ -196,6 +236,8 @@ export const Hero = () => {
           muted
           preload="auto"
           playsInline
+          poster={getPosterForVideo(videoSources[0])}
+          onCanPlayThrough={() => handleVideoCanPlayThrough(0)}
           onTimeUpdate={() => handleVideoTimeUpdate(0)}
           onEnded={() => handleVideoEnded(0)}
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[800ms] ${
@@ -212,6 +254,8 @@ export const Hero = () => {
           muted
           preload="auto"
           playsInline
+          poster={getPosterForVideo(videoSources[1])}
+          onCanPlayThrough={() => handleVideoCanPlayThrough(1)}
           onTimeUpdate={() => handleVideoTimeUpdate(1)}
           onEnded={() => handleVideoEnded(1)}
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[800ms] ${
