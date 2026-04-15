@@ -1,7 +1,11 @@
 import React from 'react';
 import { Button } from './Button';
 
-export const FooterCTA = () => {
+type FooterCTAProps = {
+  onExploreFeelings?: () => void;
+};
+
+export const FooterCTA = ({ onExploreFeelings }: FooterCTAProps) => {
   return (
     <footer 
       id="footer-cta-section"
@@ -53,6 +57,7 @@ export const FooterCTA = () => {
           id="footer-cta-button"
           variant="ghost" 
           size="lg"
+          onClick={onExploreFeelings}
           className="tempo-footer-btn !px-12 !py-3.5 text-lg md:text-xl !rounded-full shadow-sm hover:shadow-md transition-all"
           style={{ 
             minWidth: '220px',
