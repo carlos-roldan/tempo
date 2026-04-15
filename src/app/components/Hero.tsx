@@ -464,14 +464,16 @@ export const Hero = () => {
             </Button>
           </div>
           <p
-            className="mt-8 max-w-[480px] text-xs md:text-[13px] leading-relaxed text-center"
+            className="mt-16 max-w-[480px] text-xs md:text-[13px] leading-relaxed text-center"
             style={{
               color: 'rgba(255, 255, 255, 0.4)',
               fontFamily: "'DM Sans', sans-serif",
               fontWeight: 400,
             }}
           >
-            *tempo is a generative ai travel assistant that translates your desired state of being into a fully realized experience.
+            *tempo is a generative ai travel assistant
+            <br />
+            that translates your desired state of being into a fully realized experience.
           </p>
         </div>
       </div>
