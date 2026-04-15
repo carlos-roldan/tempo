@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 import { Hero } from './components/Hero';
 import { HowItWorks } from './components/HowItWorks';
 import { FeaturedJourney } from './components/FeaturedJourney';
@@ -53,6 +53,18 @@ export default function App() {
     setIsMuted((prev) => !prev);
   };
 
+  const handleCloseBrandFilm = (event?: SyntheticEvent) => {
+    event?.stopPropagation();
+    setIsBrandFilmOpen(false);
+  };
+
+  useEffect(() => {
+    if (!isBrandFilmOpen) return;
+    const video = modalVideoRef.current;
+    if (!video) return;
+    video.setAttribute('webkit-playsinline', 'true');
+  }, [isBrandFilmOpen]);
+
   return (
     <>
       <main className="w-full min-h-screen">
@@ -67,16 +79,14 @@ export default function App() {
       {isBrandFilmOpen && (
         <div
           className="fixed inset-0 z-[100] bg-black flex items-center justify-center px-4"
-          onClick={() => setIsBrandFilmOpen(false)}
+          onClick={handleCloseBrandFilm}
         >
           <button
             type="button"
             aria-label="Close video modal"
-            onClick={(event) => {
-              event.stopPropagation();
-              setIsBrandFilmOpen(false);
-            }}
-            className="absolute top-6 right-6 z-[120] text-white text-[40px] leading-none cursor-pointer"
+            onClick={handleCloseBrandFilm}
+            onTouchEnd={handleCloseBrandFilm}
+            className="absolute top-6 right-6 z-[140] text-white text-[40px] leading-none cursor-pointer pointer-events-auto"
           >
             ×
           </button>
@@ -89,6 +99,7 @@ export default function App() {
               autoPlay
               className="w-full h-auto"
               muted={isMuted}
+              playsInline
               src="/assets/tempo-brand-film.mp4"
             />
           </div>
