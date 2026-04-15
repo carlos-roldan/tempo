@@ -48,12 +48,10 @@ export default function App() {
     const video = modalVideoRef.current;
     if (!video) return;
     video.volume = volume;
-    if (volume === 0 && !isMuted) {
+    if (volume === 0) {
       setIsMuted(true);
-    } else if (volume > 0 && isMuted) {
-      setIsMuted(false);
     }
-  }, [volume, isMuted, isModalOpen, modalVideoSrc]);
+  }, [volume, isModalOpen, modalVideoSrc]);
 
   const handleMuteToggle = () => {
     setIsMuted((prev) => !prev);
