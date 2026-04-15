@@ -460,7 +460,7 @@ export const Hero = () => {
                 fontFamily: "'DM Sans', sans-serif"
               }}
             >
-              Let's Begin
+              Begin Journey
             </Button>
           </div>
           <p
@@ -472,8 +472,6 @@ export const Hero = () => {
             }}
           >
             *tempo is a generative ai travel assistant
-            <br />
-            curating experiences to reach your desired state.
           </p>
         </div>
       </div>
