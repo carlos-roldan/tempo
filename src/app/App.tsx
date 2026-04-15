@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type SyntheticEvent } from 'react';
+import React, { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 import { Hero } from './components/Hero';
 import { HowItWorks } from './components/HowItWorks';
 import { FeaturedJourney } from './components/FeaturedJourney';
@@ -78,7 +78,7 @@ export default function App() {
 
       {isBrandFilmOpen && (
         <div
-          className="fixed inset-0 z-[100] bg-black flex items-center justify-center px-4"
+          className="fixed inset-0 z-[100] bg-black flex items-center justify-center"
           onClick={handleCloseBrandFilm}
         >
           <button
@@ -86,18 +86,21 @@ export default function App() {
             aria-label="Close video modal"
             onClick={handleCloseBrandFilm}
             onTouchEnd={handleCloseBrandFilm}
-            className="absolute top-6 right-6 z-[140] text-white text-[40px] leading-none cursor-pointer pointer-events-auto"
+            className="absolute top-6 right-6 z-[140] text-white leading-none cursor-pointer pointer-events-auto"
           >
-            ×
+            <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+              <path d="M6 6L18 18" />
+              <path d="M18 6L6 18" />
+            </svg>
           </button>
           <div
-            className="w-full max-w-[1920px]"
+            className="w-full h-full"
             onClick={(event) => event.stopPropagation()}
           >
             <video
               ref={modalVideoRef}
               autoPlay
-              className="w-full h-auto"
+              className="w-full h-full object-cover"
               muted={isMuted}
               playsInline
               src="/assets/tempo-brand-film.mp4"
