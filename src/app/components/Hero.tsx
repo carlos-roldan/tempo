@@ -466,7 +466,7 @@ export const Hero = () => {
           <p
             className="mt-16 max-w-[480px] text-xs md:text-[13px] leading-relaxed text-center"
             style={{
-              color: 'rgba(255, 255, 255, 0.4)',
+              color: 'rgba(255, 255, 255, 0.75)',
               fontFamily: "'DM Sans', sans-serif",
               fontWeight: 400,
             }}
