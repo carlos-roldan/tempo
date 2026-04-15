@@ -104,7 +104,7 @@ export default function App() {
             />
           </div>
           <div
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[110] flex items-center gap-3 px-4 py-2 rounded-full"
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[110] hidden lg:flex items-center gap-3 px-4 py-2 rounded-full"
             style={{ backgroundColor: 'rgba(20, 20, 20, 0.55)' }}
             onClick={(event) => event.stopPropagation()}
           >
