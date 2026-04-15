@@ -1,7 +1,11 @@
 import React from 'react';
 import { Button } from './Button';
 
-export const FeaturedJourney = () => {
+type FeaturedJourneyProps = {
+  onBeginThisJourney?: () => void;
+};
+
+export const FeaturedJourney = ({ onBeginThisJourney }: FeaturedJourneyProps) => {
   return (
     <section 
       id="featured-journey-section"
@@ -97,6 +101,7 @@ export const FeaturedJourney = () => {
           id="featured-cta-button"
           variant="ghost" 
           size="lg"
+          onClick={onBeginThisJourney}
           className="tempo-featured-btn !px-10 !py-3.5 text-base md:text-lg !rounded-full shadow-sm hover:shadow-md transition-all"
           style={{ 
             fontFamily: "'DM Sans', sans-serif"
