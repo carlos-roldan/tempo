@@ -473,7 +473,7 @@ export const Hero = () => {
           >
             *tempo is a generative ai travel assistant
             <br />
-            that translates your desired state of being into a fully realized experience.
+            curating experiences to reach your desired state.
           </p>
         </div>
       </div>
