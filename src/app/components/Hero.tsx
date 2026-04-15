@@ -27,7 +27,11 @@ const CATEGORY_POSTERS: Record<Category, string> = {
   Cultural: '/assets/posters/cultural.jpg',
 };
 
-export const Hero = () => {
+type HeroProps = {
+  onBeginJourney?: () => void;
+};
+
+export const Hero = ({ onBeginJourney }: HeroProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeCategory, setActiveCategory] = useState<Category>('Restorative');
   const [videoSources, setVideoSources] = useState<[string, string]>([
@@ -454,6 +458,7 @@ export const Hero = () => {
               id="cta-button"
               variant="ghost" 
               size="lg"
+              onClick={onBeginJourney}
               className="tempo-hero-btn !px-12 !py-3.5 text-lg md:text-xl !rounded-full shadow-sm hover:shadow-md transition-all"
               style={{ 
                 minWidth: '220px',

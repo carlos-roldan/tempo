@@ -68,7 +68,7 @@ export default function App() {
   return (
     <>
       <main className="w-full min-h-screen">
-        <Hero />
+        <Hero onBeginJourney={() => setIsBrandFilmOpen(true)} />
         <HowItWorks />
         <FeaturedJourney />
         <FeelingCategories />
