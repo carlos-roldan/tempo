@@ -88,9 +88,9 @@ export default function App() {
             onTouchEnd={handleCloseBrandFilm}
             className="absolute top-6 right-6 z-[140] text-white leading-none cursor-pointer pointer-events-auto"
           >
-            <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-              <path d="M6 6L18 18" />
-              <path d="M18 6L6 18" />
+            <svg viewBox="0 0 24 24" className="w-[30px] h-[30px]" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+              <path d="M7 7L17 17" />
+              <path d="M17 7L7 17" />
             </svg>
           </button>
           <div
@@ -100,7 +100,7 @@ export default function App() {
             <video
               ref={modalVideoRef}
               autoPlay
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain lg:object-cover"
               muted={isMuted}
               playsInline
               src="/assets/tempo-brand-film.mp4"
