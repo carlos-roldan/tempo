@@ -5,6 +5,7 @@ import { FeaturedJourney } from './components/FeaturedJourney';
 import { FeelingCategories } from './components/FeelingCategories';
 import { Testimonial } from './components/Testimonial';
 import { FooterCTA } from './components/FooterCTA';
+import { EmailCapture } from './components/EmailCapture';
 import { FullScreenVideoModal } from './components/FullScreenVideoModal';
 
 const BRAND_FILM_SRC = '/assets/tempo-brand-film.mp4';
@@ -70,6 +71,7 @@ export default function App() {
         <FeaturedJourney onBeginThisJourney={() => setModalVideoSrc(IBERIAN_JOURNEY_SRC)} />
         <FeelingCategories />
         <Testimonial />
+        <EmailCapture />
         <FooterCTA onExploreFeelings={() => setModalVideoSrc(BRAND_FILM_SRC)} />
       </main>
 
