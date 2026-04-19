@@ -29,7 +29,7 @@ export const EmailCapture = () => {
   return (
     <section
       id="email-capture-section"
-      className="w-full flex flex-col items-center justify-center pt-16 md:pt-20 pb-24 md:pb-36 px-6"
+      className="flex h-[420px] min-h-0 w-full flex-col items-center overflow-hidden px-6 pt-16 pb-24 md:pt-20 md:pb-36"
       style={{
         backgroundColor: 'var(--bg\\/primary)',
         color: 'var(--text\\/primary)',
@@ -45,28 +45,87 @@ export const EmailCapture = () => {
         .tempo-email-submit-btn:hover {
           background-color: #8B6420 !important;
         }
+        @keyframes tempo-email-ripple {
+          0% {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+          }
+          30% {
+            opacity: 0.3;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(3);
+            opacity: 0;
+          }
+        }
+        .tempo-email-success-ring {
+          position: absolute;
+          z-index: 0;
+          left: 50%;
+          top: 50%;
+          width: 8rem;
+          aspect-ratio: 1;
+          box-sizing: border-box;
+          border: 1px solid #C9973A;
+          border-radius: 50%;
+          background-color: transparent;
+          pointer-events: none;
+          transform: translate(-50%, -50%);
+          animation-name: tempo-email-ripple;
+          animation-duration: 2s;
+          animation-timing-function: ease-out;
+          animation-iteration-count: 1;
+          animation-fill-mode: forwards;
+        }
+        @keyframes tempoEmailSuccessText {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .tempo-email-success-copy {
+          opacity: 0;
+          animation: tempoEmailSuccessText 0.8s ease-out 0.3s forwards;
+        }
       `}</style>
 
       <div
         id="email-capture-container"
-        className="w-full max-w-4xl mx-auto flex flex-col items-center text-center"
+        className="mx-auto flex min-h-0 w-full max-w-4xl flex-1 flex-col items-center justify-center text-center"
       >
         {submitted ? (
-          <p
-            id="email-capture-confirmation"
-            className="text-4xl md:text-5xl lg:text-6xl font-medium leading-tight tracking-tight"
-            style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              color: 'var(--text\\/primary)',
-            }}
-          >
-            Your journey is coming.
-          </p>
+          <div className="flex h-full min-h-0 w-full flex-1 flex-col items-center justify-center">
+            <div className="relative mx-auto flex min-h-[14rem] w-full max-w-lg items-center justify-center px-6">
+              <div
+                className="tempo-email-success-ring"
+                style={{ animationDelay: '0s' }}
+                aria-hidden
+              />
+              <div
+                className="tempo-email-success-ring"
+                style={{ animationDelay: '0.4s' }}
+                aria-hidden
+              />
+              <div
+                className="tempo-email-success-ring"
+                style={{ animationDelay: '0.8s' }}
+                aria-hidden
+              />
+              <p
+                id="email-capture-confirmation"
+                className="tempo-email-success-copy relative z-[1] text-center text-4xl md:text-5xl"
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  color: '#1C1410',
+                }}
+              >
+                Your tempo is coming.
+              </p>
+            </div>
+          </div>
         ) : (
-          <>
+          <div className="flex h-full min-h-0 w-full flex-col items-center text-center">
             <h2
               id="email-capture-headline"
-              className="text-4xl md:text-5xl lg:text-6xl font-medium leading-tight mb-6 md:mb-8 tracking-tight drop-shadow-sm"
+              className="text-4xl md:text-5xl lg:text-6xl font-medium leading-tight mb-6 md:mb-8 tracking-tight"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 color: 'var(--text\\/primary)',
@@ -143,7 +202,7 @@ export const EmailCapture = () => {
                 </p>
               )}
             </form>
-          </>
+          </div>
         )}
       </div>
     </section>
