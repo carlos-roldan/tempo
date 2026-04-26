@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
-const ITEM_H = 30;
+const ITEM_H = 44;
 const PADDING_Y = ITEM_H * 2; // 2 items top/bottom for scroll snap centering
 const VIEWPORT_HEIGHT = ITEM_H * 5; // 5 visible rows
 const CATEGORIES = ['Restorative', 'Adventurous', 'Spiritual', 'Romantic', 'Cultural'] as const;
@@ -38,10 +38,10 @@ function getItemRowOpacity(distance: number) {
 
 function getItemTypography(distance: number) {
   if (distance === 0) {
-    return { fontSize: 15, fontWeight: 500 as const };
+    return { fontSize: 17, fontWeight: 500 as const };
   }
   if (distance === 1) {
-    return { fontSize: 14, fontWeight: 400 as const };
+    return { fontSize: 15, fontWeight: 400 as const };
   }
   return { fontSize: 13, fontWeight: 400 as const };
 }
