@@ -335,7 +335,7 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
         type="button"
         onClick={handleTogglePlayback}
         aria-label={isPaused ? 'Play hero video' : 'Pause hero video'}
-        className="absolute bottom-4 right-4 z-30 w-11 h-11 flex items-center justify-center cursor-pointer text-white/50 hover:text-white/90 transition-colors"
+        className="absolute bottom-8 right-4 z-30 w-11 h-11 flex items-center justify-center cursor-pointer text-white/50 hover:text-white/90 transition-colors md:bottom-8"
       >
         {isPaused ? (
           <svg
