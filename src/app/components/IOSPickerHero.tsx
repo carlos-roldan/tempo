@@ -107,22 +107,9 @@ function PickerColumn({ items, selectedIndex, onSelectIndex, scrollKey }: Picker
       className="relative min-w-0 flex-1"
       style={{ height: VIEWPORT_HEIGHT, fontFamily: "'DM Sans', sans-serif" }}
     >
-      {/* Selection highlight */}
-      <div
-        className="pointer-events-none absolute inset-x-0 z-[2]"
-        style={{
-          top: '50%',
-          height: ITEM_H,
-          transform: 'translateY(-50%)',
-          borderRadius: 100,
-          backgroundColor: 'rgba(255,255,255,0.08)',
-          border: '0.5px solid rgba(255,255,255,0.12)',
-        }}
-        aria-hidden
-      />
       {/* Fade mask */}
       <div
-        className="pointer-events-none absolute inset-0 z-[3]"
+        className="pointer-events-none absolute inset-0 z-[2]"
         style={{
           background:
             'linear-gradient(180deg, rgba(0,0,0,0) 0%, transparent 25%, transparent 75%, rgba(0,0,0,0) 100%)',
@@ -132,14 +119,11 @@ function PickerColumn({ items, selectedIndex, onSelectIndex, scrollKey }: Picker
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        onTouchStart={(e) => e.stopPropagation()}
-        onTouchMove={(e) => e.stopPropagation()}
         className="relative z-[1] h-full w-full overflow-y-auto overscroll-y-contain [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         style={{
           scrollSnapType: 'y mandatory',
           perspective: '200px',
           transformStyle: 'preserve-3d',
-          touchAction: 'none',
         }}
       >
         <div
@@ -211,10 +195,37 @@ export function IOSPickerHero({
 
   return (
     <div
-      className="mx-auto w-full max-w-[360px] px-1"
+      className="relative mx-auto w-full max-w-[360px] px-1"
       style={{ fontFamily: "'DM Sans', sans-serif" }}
+      onTouchStart={(e) => e.stopPropagation()}
+      onTouchMove={(e) => e.stopPropagation()}
     >
-      <div className="flex w-full flex-row items-stretch justify-center">
+      <div
+        className="pointer-events-none absolute inset-x-0 z-10"
+        style={{
+          top: '50%',
+          height: ITEM_H,
+          transform: 'translateY(-50%)',
+          borderRadius: 100,
+          backgroundColor: 'rgba(255,255,255,0.10)',
+          border: '0.5px solid rgba(255,255,255,0.15)',
+        }}
+        aria-hidden
+      >
+        <div
+          className="pointer-events-none absolute"
+          style={{
+            top: '20%',
+            bottom: '20%',
+            left: '50%',
+            width: '0.5px',
+            transform: 'translateX(-50%)',
+            backgroundColor: 'rgba(255,255,255,0.25)',
+          }}
+          aria-hidden
+        />
+      </div>
+      <div className="relative z-[11] flex w-full flex-row items-stretch justify-center">
         <PickerColumn
           items={CATEGORIES}
           selectedIndex={safeCategoryIndex}
