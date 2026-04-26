@@ -189,9 +189,11 @@ export function IOSPickerHero({
           top: '50%',
           height: ITEM_H,
           transform: 'translateY(-50%)',
-          borderRadius: 100,
-          backgroundColor: 'rgba(255,255,255,0.10)',
-          border: '0.5px solid rgba(255,255,255,0.15)',
+          borderRadius: '100px',
+          backgroundColor: 'rgba(255,255,255,0.15)',
+          border: '1px solid rgba(255,255,255,0.30)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
         }}
         aria-hidden
       >
