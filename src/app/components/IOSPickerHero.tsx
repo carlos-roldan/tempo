@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
-const ITEM_H = 36;
+const ITEM_H = 48;
 const PADDING_Y = ITEM_H * 2; // 2 items top/bottom for scroll snap centering
 const VIEWPORT_HEIGHT = ITEM_H * 5; // 5 visible rows
 const CATEGORIES = ['Restorative', 'Adventurous', 'Spiritual', 'Romantic', 'Cultural'] as const;
@@ -109,7 +109,7 @@ function PickerColumn({ items, selectedIndex, onSelectIndex, scrollKey }: Picker
     >
       {/* Selection highlight */}
       <div
-        className="pointer-events-none absolute left-1 right-1 z-[2]"
+        className="pointer-events-none absolute inset-x-0 z-[2]"
         style={{
           top: '50%',
           height: ITEM_H,
@@ -132,11 +132,14 @@ function PickerColumn({ items, selectedIndex, onSelectIndex, scrollKey }: Picker
       <div
         ref={scrollRef}
         onScroll={handleScroll}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
         className="relative z-[1] h-full w-full overflow-y-auto overscroll-y-contain [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         style={{
           scrollSnapType: 'y mandatory',
           perspective: '200px',
           transformStyle: 'preserve-3d',
+          touchAction: 'none',
         }}
       >
         <div
@@ -208,7 +211,7 @@ export function IOSPickerHero({
 
   return (
     <div
-      className="mx-auto w-full max-w-[340px] px-1"
+      className="mx-auto w-full max-w-[360px] px-1"
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
       <div className="flex w-full flex-row items-stretch justify-center">
