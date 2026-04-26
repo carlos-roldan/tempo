@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from './Button';
+import { IOSPickerHero } from './IOSPickerHero';
 
 const CATEGORY_TAGS = {
   Restorative: ['Recharged', 'Reconnected', 'At Peace', 'Renewed'],
@@ -44,11 +45,21 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
   const [isLoopTransitioning, setIsLoopTransitioning] = useState(false);
   const [isPosterVisible, setIsPosterVisible] = useState(true);
   const [activeFeelingIndex, setActiveFeelingIndex] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < 768,
+  );
   const videoRefs = useRef<[HTMLVideoElement | null, HTMLVideoElement | null]>([null, null]);
   const loopTimersRef = useRef<number[]>([]);
   const loopFadeStartedRef = useRef<[boolean, boolean]>([false, false]);
 
   const currentTags = CATEGORY_TAGS[activeCategory];
+
+  useEffect(() => {
+    const updateIsMobile = () => setIsMobile(window.innerWidth < 768);
+    updateIsMobile();
+    window.addEventListener('resize', updateIsMobile);
+    return () => window.removeEventListener('resize', updateIsMobile);
+  }, []);
 
   useEffect(() => {
     const preloaders = (Object.values(CATEGORY_VIDEOS) as string[]).map((src) => {
@@ -97,7 +108,7 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
     };
   }, []);
 
-  const handleCategorySelect = (category: Category) => {
+  const handleCategorySelect = (category: Category, nextFeelingIndex?: number | null) => {
     if (category === activeCategory) return;
 
     const nextVideo = CATEGORY_VIDEOS[category];
@@ -113,7 +124,7 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
     }
 
     setActiveCategory(category);
-    setActiveFeelingIndex(null);
+    setActiveFeelingIndex(nextFeelingIndex === undefined ? null : nextFeelingIndex);
     setIsCrossfading(true);
     setActiveLayer(inactiveLayer);
   };
@@ -389,67 +400,83 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
           
           {/* Tag Container - Using relative/absolute to prevent layout shift */}
           <div className="w-full flex flex-col items-center justify-start mb-2 md:mb-4">
-            
-            {/* Primary Row: Feelings */}
-            <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4 w-full z-10 mb-4 md:mb-5">
-              {currentTags.map((tag, idx) => {
-                const isSelected = activeFeelingIndex === idx;
-                return (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => setActiveFeelingIndex(idx)}
-                  className={`tempo-feeling-tag px-6 py-2.5 rounded-full text-sm md:text-base tracking-wide border backdrop-blur-md cursor-pointer ${
-                    isSelected ? 'tempo-feeling-tag--selected' : 'bg-transparent'
-                  }`}
-                  style={{ 
-                    color: 'white', 
-                    borderColor: isSelected ? '#C9973A' : 'rgba(255, 255, 255, 0.3)',
-                    backgroundColor: isSelected ? '#C9973A' : 'transparent',
-                    fontFamily: "'DM Sans', sans-serif"
-                  }}
-                >
-                  {tag}
-                </button>
-                );
-              })}
-            </div>
+            {isMobile && (
+              <div className="relative z-20 mb-4 w-full">
+                <IOSPickerHero
+                  activeCategory={activeCategory}
+                  onCategoryChange={handleCategorySelect}
+                  activeFeelingIndex={activeFeelingIndex}
+                  onFeelingIndexChange={setActiveFeelingIndex}
+                />
+              </div>
+            )}
 
-            {/* Secondary Row / Link Area - Reserved height area */}
-            <div className="w-full flex justify-center items-start min-h-[36px] md:min-h-[48px]">
-              {!isExpanded && (
-                <button 
-                  onClick={() => setIsExpanded(true)}
-                  className="text-sm md:text-base font-light tracking-wide cursor-pointer hover:opacity-80 transition-opacity border-b border-white/60 hover:border-white pb-0.5 fade-in z-20"
-                  style={{ 
-                    color: 'white',
-                    fontFamily: "'DM Sans', sans-serif"
-                  }}
-                >
-                  More tempos
-                </button>
-              )}
-              {isExpanded && (
-                <div className="flex flex-wrap justify-center items-center gap-y-5 gap-x-4 md:gap-6 w-full fade-in z-20">
-                  {(Object.keys(CATEGORY_TAGS) as Category[]).map(cat => (
-                    <button 
-                      key={cat}
-                      onClick={() => handleCategorySelect(cat)}
-                      className={`text-sm md:text-base font-light tracking-wide cursor-pointer transition-all pb-0.5 border-b ${
-                        activeCategory === cat 
-                          ? 'border-white/100 text-white' 
-                          : 'border-transparent text-white/60 hover:text-white hover:border-white/60'
+            {!isMobile && (
+              <>
+                {/* Primary Row: Feelings */}
+                <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4 w-full z-10 mb-4 md:mb-5">
+                  {currentTags.map((tag, idx) => {
+                    const isSelected = activeFeelingIndex === idx;
+                    return (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => setActiveFeelingIndex(idx)}
+                      className={`tempo-feeling-tag px-6 py-2.5 rounded-full text-sm md:text-base tracking-wide border backdrop-blur-md cursor-pointer ${
+                        isSelected ? 'tempo-feeling-tag--selected' : 'bg-transparent'
                       }`}
                       style={{ 
+                        color: 'white', 
+                        borderColor: isSelected ? '#C9973A' : 'rgba(255, 255, 255, 0.3)',
+                        backgroundColor: isSelected ? '#C9973A' : 'transparent',
                         fontFamily: "'DM Sans', sans-serif"
                       }}
                     >
-                      {cat}
+                      {tag}
                     </button>
-                  ))}
+                    );
+                  })}
                 </div>
-              )}
-            </div>
+
+                {/* Secondary Row / Link Area */}
+                <div className="w-full flex justify-center items-start min-h-[36px] md:min-h-[48px]">
+                  {!isExpanded && (
+                    <button 
+                      type="button"
+                      onClick={() => setIsExpanded(true)}
+                      className="text-sm md:text-base font-light tracking-wide cursor-pointer hover:opacity-80 transition-opacity border-b border-white/60 hover:border-white pb-0.5 fade-in z-20"
+                      style={{ 
+                        color: 'white',
+                        fontFamily: "'DM Sans', sans-serif"
+                      }}
+                    >
+                      More tempos
+                    </button>
+                  )}
+                  {isExpanded && (
+                    <div className="flex flex-wrap justify-center items-center gap-y-5 gap-x-4 md:gap-6 w-full fade-in z-20">
+                      {(Object.keys(CATEGORY_TAGS) as Category[]).map(cat => (
+                        <button 
+                          key={cat}
+                          type="button"
+                          onClick={() => handleCategorySelect(cat)}
+                          className={`text-sm md:text-base font-light tracking-wide cursor-pointer transition-all pb-0.5 border-b ${
+                            activeCategory === cat 
+                              ? 'border-white/100 text-white' 
+                              : 'border-transparent text-white/60 hover:text-white hover:border-white/60'
+                          }`}
+                          style={{ 
+                            fontFamily: "'DM Sans', sans-serif"
+                          }}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
           </div>
 
           {/* CTA Button Layer */}
