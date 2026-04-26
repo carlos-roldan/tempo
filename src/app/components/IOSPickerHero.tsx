@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
-const ITEM_H = 48;
+const ITEM_H = 30;
 const PADDING_Y = ITEM_H * 2; // 2 items top/bottom for scroll snap centering
 const VIEWPORT_HEIGHT = ITEM_H * 5; // 5 visible rows
 const CATEGORIES = ['Restorative', 'Adventurous', 'Spiritual', 'Romantic', 'Cultural'] as const;
@@ -29,20 +29,11 @@ type PickerColumnProps = {
   scrollKey: string | number;
 };
 
-/** iOS-style drum: items above center use +rotateX, below use −rotateX. */
-function getItemCylinderTransform(index: number, selectedIndex: number) {
-  const distance = Math.abs(index - selectedIndex);
-  if (distance === 0) {
-    return { rotateXDeg: 0, opacity: 1, scale: 1 };
-  }
-  const sign = index < selectedIndex ? 1 : -1;
-  if (distance === 1) {
-    return { rotateXDeg: 18 * sign, opacity: 0.45, scale: 0.95 };
-  }
-  if (distance === 2) {
-    return { rotateXDeg: 32 * sign, opacity: 0.22, scale: 0.88 };
-  }
-  return { rotateXDeg: 45 * sign, opacity: 0.1, scale: 0.8 };
+function getItemRowOpacity(distance: number) {
+  if (distance === 0) return 1;
+  if (distance === 1) return 0.45;
+  if (distance === 2) return 0.22;
+  return 0.1;
 }
 
 function getItemTypography(distance: number) {
@@ -122,23 +113,17 @@ function PickerColumn({ items, selectedIndex, onSelectIndex, scrollKey }: Picker
         className="relative z-[1] h-full w-full overflow-y-auto overscroll-y-contain [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         style={{
           scrollSnapType: 'y mandatory',
-          perspective: '200px',
-          transformStyle: 'preserve-3d',
         }}
       >
         <div
           style={{
             paddingTop: PADDING_Y,
             paddingBottom: PADDING_Y,
-            transformStyle: 'preserve-3d',
           }}
         >
           {items.map((label, i) => {
             const distance = Math.abs(i - selectedIndex);
-            const { rotateXDeg, opacity: rowOpacity, scale } = getItemCylinderTransform(
-              i,
-              selectedIndex,
-            );
+            const rowOpacity = getItemRowOpacity(distance);
             const { fontSize, fontWeight } = getItemTypography(distance);
             return (
               <div
@@ -147,10 +132,8 @@ function PickerColumn({ items, selectedIndex, onSelectIndex, scrollKey }: Picker
                 style={{
                   height: ITEM_H,
                   scrollSnapAlign: 'center',
-                  transform: `rotateX(${rotateXDeg}deg) scale(${scale})`,
-                  transformOrigin: 'center center',
                   opacity: rowOpacity,
-                  transition: 'all 0.2s ease',
+                  transition: 'opacity 0.2s ease, font-size 0.2s ease, font-weight 0.2s ease',
                   color: 'rgba(255,255,255,0.9)',
                   fontSize,
                   fontWeight,
