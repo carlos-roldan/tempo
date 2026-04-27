@@ -126,6 +126,7 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
           style={{
             transition:
               'transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s cubic-bezier(0.16,1,0.3,1)',
+            overflow: 'hidden',
           }}
           onClick={(e) => e.stopPropagation()}
         >
