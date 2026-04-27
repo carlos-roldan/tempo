@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from './Button';
 import { IOSPickerHero } from './IOSPickerHero';
+import { LeadCaptureModal } from './Tempo/LeadCaptureModal';
 
 const CATEGORY_TAGS = {
   Restorative: ['Recharged', 'Reconnected', 'At Peace', 'Renewed'],
@@ -48,6 +49,7 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
   const [isMobile, setIsMobile] = useState(
     () => typeof window !== 'undefined' && window.innerWidth < 768,
   );
+  const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
   const videoRefs = useRef<[HTMLVideoElement | null, HTMLVideoElement | null]>([null, null]);
   const loopTimersRef = useRef<number[]>([]);
   const loopFadeStartedRef = useRef<[boolean, boolean]>([false, false]);
@@ -485,14 +487,14 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
               id="cta-button"
               variant="ghost" 
               size="lg"
-              onClick={onBeginJourney}
+              onClick={() => setIsLeadModalOpen(true)}
               className="tempo-hero-btn !px-12 !py-3.5 text-lg md:text-xl !rounded-full shadow-sm hover:shadow-md transition-all"
               style={{ 
                 minWidth: '220px',
                 fontFamily: "'DM Sans', sans-serif"
               }}
             >
-              Begin Journey
+              Begin journey
             </Button>
           </div>
           <p
@@ -507,6 +509,10 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
           </p>
         </div>
       </div>
+      <LeadCaptureModal
+        isOpen={isLeadModalOpen}
+        setIsOpen={setIsLeadModalOpen}
+      />
     </section>
   );
 };
