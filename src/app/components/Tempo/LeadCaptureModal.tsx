@@ -182,38 +182,30 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
               </p>
 
               <form onSubmit={handleSubmit} noValidate className="mt-9">
-                <div
-                  className="flex h-14 w-full items-center overflow-hidden rounded-full border"
-                  style={{
-                    borderColor: 'rgba(255,255,255,0.25)',
-                    backgroundColor: 'rgba(255,255,255,0.06)',
+                <input
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                    if (error) setError(null);
                   }}
-                >
-                  <input
-                    type="email"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(event) => {
-                      setEmail(event.target.value);
-                      if (error) setError(null);
-                    }}
-                    placeholder="your@email.com"
-                    className="h-full min-w-0 flex-1 border-0 bg-transparent px-6 text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
-                  />
-                  <button
-                    type="submit"
-                    className="h-full px-7 text-[15px] font-medium text-white"
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      backgroundColor: 'rgba(201,151,58,0.9)',
-                      border: 'none',
-                      borderRadius: '0 100px 100px 0',
-                    }}
-                  >
-                    Notify me
-                  </button>
-                </div>
+                  placeholder="your@email.com"
+                  className="h-14 w-full rounded-full border text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '16px',
+                    backgroundColor: 'rgba(255,255,255,0.06)',
+                    borderColor: 'rgba(255,255,255,0.25)',
+                    padding: '0 24px',
+                  }}
+                  onFocus={(event) => {
+                    event.currentTarget.style.borderColor = 'rgba(201,151,58,0.6)';
+                  }}
+                  onBlur={(event) => {
+                    event.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+                  }}
+                />
                 {error && (
                   <p
                     role="alert"
@@ -226,6 +218,18 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
                     Please enter a valid email.
                   </p>
                 )}
+                <button
+                  type="submit"
+                  className="mt-3 h-14 w-full rounded-full text-[15px] font-medium text-white transition-colors hover:bg-[rgba(201,151,58,1)]"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 500,
+                    backgroundColor: 'rgba(201,151,58,0.9)',
+                    border: 'none',
+                  }}
+                >
+                  Notify me
+                </button>
               </form>
             </>
           ) : (
