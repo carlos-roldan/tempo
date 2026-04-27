@@ -198,7 +198,7 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
                       if (error) setError(null);
                     }}
                     placeholder="your@email.com"
-                    className="h-full min-w-0 flex-1 border-0 bg-transparent px-6 text-[15px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none"
+                    className="h-full min-w-0 flex-1 border-0 bg-transparent px-6 text-[16px] text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
                   />
                   <button
