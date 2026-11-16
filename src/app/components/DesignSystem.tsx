@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Task1BInteractionLab } from './Task1BInteractionLab';
 
 type BadgeStatus = 'AAA' | 'AA' | 'AA Large' | 'AA UI' | 'FAIL';
 
@@ -552,13 +553,7 @@ export function DesignSystem() {
                 color: 'var(--text\\/on-accent)',
               }}
             >
-              v2.0 Design System & Case Study
-            </span>
-            <span
-              className="hidden text-sm md:inline"
-              style={{ color: 'var(--text\\/inverse-secondary)' }}
-            >
-              WCAG 2.1 AA/AAA Production Reference
+              Design System
             </span>
           </div>
 
@@ -578,12 +573,15 @@ export function DesignSystem() {
             <a href="#typography-scale" className="text-white/80 hover:text-white transition-colors">
               5. Typography
             </a>
+            <a href="#navigation" className="text-white/80 hover:text-white transition-colors">
+              6. Navigation
+            </a>
             <a
               href="/"
               className="rounded-full border px-3.5 py-1 text-xs text-white hover:bg-white/10 transition-colors"
               style={{ borderColor: 'var(--border\\/inverse-interactive)' }}
             >
-              ← Live Tempo Site
+              Live tempo Site →
             </a>
           </nav>
         </div>
@@ -620,7 +618,8 @@ export function DesignSystem() {
                 All production components are powered by semantic tokens in{' '}
                 <code>src/Tempo/styles.css</code>. Below is the interactive{' '}
                 <strong>v1.0 → v2.0 Accessibility & Contrast Audit (Before vs. After)</strong>{' '}
-                alongside our production token matrix and editorial typography scale.
+                alongside our production token matrix, editorial typography scale, and desktop
+                rhythm navigation.
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -1805,6 +1804,9 @@ export function DesignSystem() {
             ))}
           </div>
         </section>
+
+        {/* SECTION 6: DESKTOP RHYTHM NAVIGATION */}
+        <Task1BInteractionLab />
       </main>
     </div>
   );

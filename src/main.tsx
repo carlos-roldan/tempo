@@ -16,7 +16,7 @@ if (isDesignSystemRoute) {
     document.head.appendChild(robotsMeta);
   }
   robotsMeta.content = "noindex, nofollow";
-  document.title = "tempo — v2.0 Design System & Accessibility Case Study";
+  document.title = "tempo — v2.0 Design System & Case Study";
 }
 
 createRoot(document.getElementById("root")!).render(

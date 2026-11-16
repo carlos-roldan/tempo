@@ -221,19 +221,11 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
           border-bottom-color: var(--border\\/inverse);
         }
 
-        .tempo-more-tempos-option {
-          color: var(--text\\/inverse) !important;
-          border-bottom: 1px solid transparent;
-          transition: border-color 0.2s ease, opacity 0.2s ease;
+        .tempo-drawer-row {
+          transition: all 0.2s ease;
         }
-        .tempo-more-tempos-option:hover {
-          color: var(--text\\/inverse) !important;
-          border-bottom-color: var(--border\\/inverse-subtle);
-        }
-        .tempo-more-tempos-option--active,
-        .tempo-more-tempos-option--active:hover {
-          color: var(--text\\/inverse) !important;
-          border-bottom-color: var(--border\\/inverse);
+        .tempo-drawer-row:hover:not(.tempo-drawer-row--active) {
+          background-color: var(--surface\\/glass-hover);
         }
 
         .tempo-hero-pause-btn {
@@ -455,76 +447,194 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
 
             {!isMobile && (
               <>
-                {/* Primary Row: Feelings */}
-                <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4 w-full z-10 mb-4 md:mb-5">
-                  {currentTags.map((tag, idx) => {
-                    const isSelected = activeFeelingIndex === idx;
-                    return (
-                    <button
-                      key={tag}
-                      type="button"
-                      onClick={() => setActiveFeelingIndex(idx)}
-                      className={`tempo-feeling-tag px-6 py-2.5 rounded-full text-sm md:text-base tracking-wide border backdrop-blur-md cursor-pointer ${
-                        isSelected ? 'tempo-feeling-tag--selected font-medium' : 'bg-transparent'
-                      }`}
-                      style={{ 
-                        color: isSelected ? 'var(--text\\/on-accent)' : 'var(--text\\/inverse)', 
-                        borderColor: isSelected ? 'var(--accent\\/default)' : 'var(--border\\/inverse-interactive)',
-                        backgroundColor: isSelected ? 'var(--accent\\/default)' : 'transparent',
-                        fontFamily: 'var(--font\\/sans)'
-                      }}
-                    >
-                      {tag}
-                    </button>
-                    );
-                  })}
-                </div>
-
-                {/* Secondary Row / Link Area */}
-                <div className="w-full flex justify-center items-start min-h-[36px] md:min-h-[48px]">
-                  {!isExpanded && (
-                    <button 
-                      type="button"
-                      onClick={() => setIsExpanded(true)}
-                      className="tempo-more-tempos-trigger text-sm md:text-base font-light tracking-wide cursor-pointer hover:opacity-80 pb-0.5 fade-in z-20"
-                      style={{ 
-                        color: 'var(--text\\/inverse)',
-                        fontFamily: 'var(--font\\/sans)'
-                      }}
-                    >
-                      More tempos
-                    </button>
-                  )}
-                  {isExpanded && (
-                    <div className="flex flex-wrap justify-center items-center gap-y-5 gap-x-4 md:gap-6 w-full fade-in z-20">
-                      {(Object.keys(CATEGORY_TAGS) as Category[]).map(cat => (
-                        <button 
-                          key={cat}
-                          type="button"
-                          onClick={() => handleCategorySelect(cat)}
-                          className={`tempo-more-tempos-option text-sm md:text-base font-light tracking-wide cursor-pointer pb-0.5 ${
-                            activeCategory === cat 
-                              ? 'tempo-more-tempos-option--active' 
-                              : ''
-                          }`}
-                          style={{ 
-                            color: 'var(--text\\/inverse)',
-                            borderBottomColor: activeCategory === cat ? 'var(--border\\/inverse)' : undefined,
-                            fontFamily: 'var(--font\\/sans)'
-                          }}
-                        >
-                          {cat}
-                        </button>
-                      ))}
+                {!isExpanded ? (
+                  <>
+                    {/* Primary Row: Feelings */}
+                    <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4 w-full z-10 mb-4 md:mb-5">
+                      {currentTags.map((tag, idx) => {
+                        const isSelected = activeFeelingIndex === idx;
+                        return (
+                          <button
+                            key={tag}
+                            type="button"
+                            onClick={() => setActiveFeelingIndex(idx)}
+                            className={`tempo-feeling-tag px-6 py-2.5 rounded-full text-sm md:text-base tracking-wide border backdrop-blur-md cursor-pointer ${
+                              isSelected ? 'tempo-feeling-tag--selected font-medium' : 'bg-transparent'
+                            }`}
+                            style={{ 
+                              color: isSelected ? 'var(--text\\/on-accent)' : 'var(--text\\/inverse)', 
+                              borderColor: isSelected ? 'var(--accent\\/default)' : 'var(--border\\/inverse-interactive)',
+                              backgroundColor: isSelected ? 'var(--accent\\/default)' : 'transparent',
+                              fontFamily: 'var(--font\\/sans)'
+                            }}
+                          >
+                            {tag}
+                          </button>
+                        );
+                      })}
                     </div>
-                  )}
-                </div>
+
+                    {/* Secondary Row / Link Area */}
+                    <div className="w-full flex justify-center items-start min-h-[36px] md:min-h-[48px]">
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          if (activeFeelingIndex === null) {
+                            setActiveFeelingIndex(0);
+                          }
+                          setIsExpanded(true);
+                        }}
+                        className="tempo-more-tempos-trigger text-sm md:text-base font-light tracking-wide cursor-pointer hover:opacity-80 pb-0.5 fade-in z-20"
+                        style={{ 
+                          color: 'var(--text\\/inverse)',
+                          fontFamily: 'var(--font\\/sans)'
+                        }}
+                      >
+                        More tempos
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  /* Frosted Glass Dual-Column Rhythm Picker (Option 02) */
+                  <div
+                    className="fade-in relative z-20 w-full max-w-2xl overflow-hidden rounded-2xl border p-5 text-left backdrop-blur-xl md:p-6"
+                    style={{
+                      backgroundColor: 'var(--scrim\\/featured)',
+                      borderColor: 'var(--border\\/inverse-interactive)',
+                      fontFamily: 'var(--font\\/sans)',
+                    }}
+                  >
+                    <div
+                      className="mb-4 flex items-center justify-between border-b pb-3"
+                      style={{ borderColor: 'var(--border\\/inverse-divider)' }}
+                    >
+                      <div className="flex items-center gap-2 text-xs tracking-wider uppercase">
+                        <span style={{ color: 'var(--accent\\/inverse-eyebrow)' }}>
+                          Selected Rhythm:
+                        </span>
+                        <span className="font-medium" style={{ color: 'var(--text\\/inverse)' }}>
+                          {activeCategory} · {currentTags[activeFeelingIndex ?? 0]}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setIsExpanded(false)}
+                        className="cursor-pointer text-xs tracking-wide transition-colors hover:opacity-100"
+                        style={{ color: 'var(--text\\/inverse-secondary)' }}
+                      >
+                        Collapse ✕
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
+                      {/* Left Column: 5 Tempo Categories */}
+                      <div
+                        className="flex flex-col space-y-1.5 md:col-span-5 md:border-r md:pr-5"
+                        style={{ borderColor: 'var(--border\\/inverse-divider)' }}
+                      >
+                        <span
+                          className="mb-1 px-3 text-[11px] tracking-[0.18em] uppercase"
+                          style={{ color: 'var(--text\\/inverse-muted)' }}
+                        >
+                          1. Choose Tempo
+                        </span>
+                        {(Object.keys(CATEGORY_TAGS) as Category[]).map((cat) => {
+                          const isActive = activeCategory === cat;
+                          return (
+                            <button
+                              key={cat}
+                              type="button"
+                              onClick={() => {
+                                if (cat !== activeCategory) {
+                                  handleCategorySelect(cat, 0);
+                                } else if (activeFeelingIndex === null) {
+                                  setActiveFeelingIndex(0);
+                                }
+                              }}
+                              className={`tempo-drawer-row flex w-full cursor-pointer items-center justify-between rounded-full px-4 py-2 text-left text-sm ${
+                                isActive ? 'tempo-drawer-row--active font-medium' : 'font-normal'
+                              }`}
+                              style={{
+                                color: 'var(--text\\/inverse)',
+                                backgroundColor: isActive
+                                  ? 'var(--surface\\/glass-picker)'
+                                  : 'transparent',
+                                border: isActive
+                                  ? '1px solid var(--border\\/inverse-interactive)'
+                                  : '1px solid transparent',
+                              }}
+                            >
+                              <span>{cat}</span>
+                              <span
+                                className="h-2 w-2 rounded-full"
+                                style={{
+                                  backgroundColor: isActive
+                                    ? 'var(--accent\\/default)'
+                                    : 'transparent',
+                                }}
+                              />
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {/* Right Column: 4 Feelings for Active Tempo */}
+                      <div className="flex flex-col justify-between md:col-span-7">
+                        <div>
+                          <span
+                            className="mb-2.5 block text-[11px] tracking-[0.18em] uppercase"
+                            style={{ color: 'var(--text\\/inverse-muted)' }}
+                          >
+                            2. Select Feeling
+                          </span>
+                          <div className="grid grid-cols-2 gap-2.5">
+                            {currentTags.map((tag, idx) => {
+                              const selectedIdx = activeFeelingIndex ?? 0;
+                              const isSelected = selectedIdx === idx;
+                              return (
+                                <button
+                                  key={tag}
+                                  type="button"
+                                  onClick={() => setActiveFeelingIndex(idx)}
+                                  className={`tempo-feeling-tag cursor-pointer rounded-full border px-4 py-2.5 text-center text-sm tracking-wide ${
+                                    isSelected ? 'tempo-feeling-tag--selected font-medium' : ''
+                                  }`}
+                                  style={{
+                                    color: isSelected
+                                      ? 'var(--text\\/on-accent)'
+                                      : 'var(--text\\/inverse)',
+                                    borderColor: isSelected
+                                      ? 'var(--accent\\/default)'
+                                      : 'var(--border\\/inverse-interactive)',
+                                    backgroundColor: isSelected
+                                      ? 'var(--accent\\/default)'
+                                      : 'var(--surface\\/glass-subtle)',
+                                  }}
+                                >
+                                  {tag}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        <p
+                          className="mt-4 text-xs"
+                          style={{ color: 'var(--text\\/inverse-secondary)' }}
+                        >
+                          Mirrors the mobile dual-wheel hierarchy while keeping all options visible
+                          at a glance on desktop.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </>
             )}
           </div>
 
           {/* CTA Button Layer */}
-          <div id="cta-button-wrapper" className={`z-10 relative ${isExpanded ? 'mt-12' : 'mt-6'} md:mt-4`}>
+          <div id="cta-button-wrapper" className={`z-10 relative ${isExpanded ? 'mt-8' : 'mt-6'} md:mt-4`}>
             <Button 
               id="cta-button"
               variant="ghost" 
