@@ -579,52 +579,42 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
                       </div>
 
                       {/* Right Column: 4 Feelings for Active Tempo */}
-                      <div className="flex flex-col justify-between md:col-span-7">
-                        <div>
-                          <span
-                            className="mb-2.5 block text-[11px] tracking-[0.18em] uppercase"
-                            style={{ color: 'var(--text\\/inverse-muted)' }}
-                          >
-                            2. Select Feeling
-                          </span>
-                          <div className="grid grid-cols-2 gap-2.5">
-                            {currentTags.map((tag, idx) => {
-                              const selectedIdx = activeFeelingIndex ?? 0;
-                              const isSelected = selectedIdx === idx;
-                              return (
-                                <button
-                                  key={tag}
-                                  type="button"
-                                  onClick={() => setActiveFeelingIndex(idx)}
-                                  className={`tempo-feeling-tag cursor-pointer rounded-full border px-4 py-2.5 text-center text-sm tracking-wide ${
-                                    isSelected ? 'tempo-feeling-tag--selected font-medium' : ''
-                                  }`}
-                                  style={{
-                                    color: isSelected
-                                      ? 'var(--text\\/on-accent)'
-                                      : 'var(--text\\/inverse)',
-                                    borderColor: isSelected
-                                      ? 'var(--accent\\/default)'
-                                      : 'var(--border\\/inverse-interactive)',
-                                    backgroundColor: isSelected
-                                      ? 'var(--accent\\/default)'
-                                      : 'var(--surface\\/glass-subtle)',
-                                  }}
-                                >
-                                  {tag}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-
-                        <p
-                          className="mt-4 text-xs"
-                          style={{ color: 'var(--text\\/inverse-secondary)' }}
+                      <div className="flex flex-col md:col-span-7">
+                        <span
+                          className="mb-2.5 block text-[11px] tracking-[0.18em] uppercase"
+                          style={{ color: 'var(--text\\/inverse-muted)' }}
                         >
-                          Mirrors the mobile dual-wheel hierarchy while keeping all options visible
-                          at a glance on desktop.
-                        </p>
+                          2. Select Feeling
+                        </span>
+                        <div className="grid grid-cols-2 gap-2.5">
+                          {currentTags.map((tag, idx) => {
+                            const selectedIdx = activeFeelingIndex ?? 0;
+                            const isSelected = selectedIdx === idx;
+                            return (
+                              <button
+                                key={tag}
+                                type="button"
+                                onClick={() => setActiveFeelingIndex(idx)}
+                                className={`tempo-feeling-tag cursor-pointer rounded-full border px-4 py-2.5 text-center text-sm tracking-wide ${
+                                  isSelected ? 'tempo-feeling-tag--selected font-medium' : ''
+                                }`}
+                                style={{
+                                  color: isSelected
+                                    ? 'var(--text\\/on-accent)'
+                                    : 'var(--text\\/inverse)',
+                                  borderColor: isSelected
+                                    ? 'var(--accent\\/default)'
+                                    : 'var(--border\\/inverse-interactive)',
+                                  backgroundColor: isSelected
+                                    ? 'var(--accent\\/default)'
+                                    : 'var(--surface\\/glass-subtle)',
+                                }}
+                              >
+                                {tag}
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
                   </div>
