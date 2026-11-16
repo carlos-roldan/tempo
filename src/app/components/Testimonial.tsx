@@ -15,10 +15,11 @@ export const Testimonial = () => {
       >
         <span 
           id="testimonial-quote-mark"
+          aria-hidden="true"
           className="text-7xl md:text-8xl lg:text-9xl leading-none h-12 md:h-16 mb-8 md:mb-12 block"
           style={{ 
-            fontFamily: "'Cormorant Garamond', serif",
-            color: '#C6A87C' // Refined editorial gold
+            fontFamily: 'var(--font\\/serif)',
+            color: 'var(--accent\\/editorial-quote)'
           }}
         >
           “
@@ -28,18 +29,18 @@ export const Testimonial = () => {
           id="testimonial-quote-text"
           className="text-3xl md:text-4xl lg:text-5xl font-light italic leading-tight md:leading-snug mb-10 md:mb-12 text-balance"
           style={{ 
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: 'var(--font\\/serif)',
             color: 'var(--text\\/primary)'
           }}
         >
-          I didn't search for a destination. I searched for a feeling. tempo found both.
+          I didn&apos;t search for a destination. I searched for a feeling. tempo found both.
         </blockquote>
         
         <cite 
           id="testimonial-attribution"
           className="not-italic uppercase text-xs md:text-sm tracking-[0.2em]"
           style={{ 
-            fontFamily: "'DM Sans', sans-serif",
+            fontFamily: 'var(--font\\/sans)',
             color: 'var(--text\\/secondary)'
           }}
         >

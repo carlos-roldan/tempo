@@ -27,7 +27,8 @@ export function FullScreenVideoModal({
 
   return (
     <div
-      className="fixed inset-0 z-[100] bg-black flex items-center justify-center"
+      className="fixed inset-0 z-[100] flex items-center justify-center"
+      style={{ backgroundColor: 'var(--bg\\/black)' }}
       onClick={onClose}
     >
       <button
@@ -35,7 +36,8 @@ export function FullScreenVideoModal({
         aria-label="Close video modal"
         onClick={onClose}
         onTouchEnd={onClose}
-        className="absolute top-6 right-6 z-[140] text-white leading-none cursor-pointer pointer-events-auto"
+        className="absolute top-6 right-6 z-[140] leading-none cursor-pointer pointer-events-auto"
+        style={{ color: 'var(--text\\/inverse)' }}
       >
         <svg viewBox="0 0 24 24" className="w-[30px] h-[30px]" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
           <path d="M7 7L17 17" />
@@ -58,14 +60,15 @@ export function FullScreenVideoModal({
       </div>
       <div
         className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[110] hidden lg:flex items-center gap-3 px-4 py-2 rounded-full"
-        style={{ backgroundColor: 'rgba(20, 20, 20, 0.55)' }}
+        style={{ backgroundColor: 'var(--surface\\/video-controls)' }}
         onClick={(event) => event.stopPropagation()}
       >
         <button
           type="button"
           aria-label={isMuted ? 'Unmute video' : 'Mute video'}
           onClick={onMuteToggle}
-          className="text-white cursor-pointer"
+          className="cursor-pointer"
+          style={{ color: 'var(--text\\/inverse)' }}
         >
           {isMuted ? (
             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">

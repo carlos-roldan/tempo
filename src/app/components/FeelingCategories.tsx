@@ -51,7 +51,7 @@ export const FeelingCategories = () => {
           className="uppercase text-xs md:text-sm tracking-[0.2em] mb-12 md:mb-16 text-center"
           style={{ 
             color: 'var(--text\\/secondary)',
-            fontFamily: "'DM Sans', sans-serif"
+            fontFamily: 'var(--font\\/sans)'
           }}
         >
           Explore by Feeling
@@ -79,18 +79,19 @@ export const FeelingCategories = () => {
               {/* Dark Warm Overlay */}
               <div 
                 id={`category-overlay-${category.id}`}
-                className="absolute inset-0 transition-colors duration-500 group-hover:bg-opacity-40"
+                className="absolute inset-0 transition-colors duration-500"
                 style={{ 
-                  backgroundColor: 'rgba(28, 20, 16, 0.45)' // Warm charcoal slate overlay
+                  backgroundColor: 'var(--scrim\\/category)'
                 }}
               />
 
               {/* Label Layer */}
               <span 
                 id={`category-label-${category.id}`}
-                className="relative z-10 text-white text-2xl md:text-3xl lg:text-4xl font-light tracking-wide drop-shadow-sm"
+                className="relative z-10 text-2xl md:text-3xl lg:text-4xl font-light tracking-wide drop-shadow-sm"
                 style={{ 
-                  fontFamily: "'Cormorant Garamond', serif"
+                  color: 'var(--text\\/inverse)',
+                  fontFamily: 'var(--font\\/serif)'
                 }}
               >
                 {category.label}

@@ -88,7 +88,7 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
           width: 8rem;
           aspect-ratio: 1;
           box-sizing: border-box;
-          border: 1px solid rgba(201, 151, 58, 0.6);
+          border: 1px solid var(--border\\/accent-ring);
           border-radius: 50%;
           background-color: transparent;
           pointer-events: none;
@@ -107,8 +107,7 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
         style={{
-          background:
-            'radial-gradient(ellipse at center, rgba(28,20,16,0.75) 0%, rgba(0,0,0,0.88) 100%)',
+          background: 'var(--scrim\\/modal-backdrop)',
           backdropFilter: 'blur(6px)',
           WebkitBackdropFilter: 'blur(6px)',
         }}
@@ -120,7 +119,7 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
           role="dialog"
           aria-modal="true"
           aria-label="Lead capture"
-          className={`relative h-full w-full bg-[#1C1410] px-7 pt-16 pb-12 md:h-auto md:max-w-[480px] md:rounded-[20px] md:px-10 md:pt-14 md:pb-12 ${
+          className={`relative h-full w-full bg-[var(--bg\/inverse)] px-7 pt-16 pb-12 md:h-auto md:max-w-[480px] md:rounded-[20px] md:px-10 md:pt-14 md:pb-12 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
           }`}
           style={{
@@ -134,7 +133,7 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
             type="button"
             aria-label="Close modal"
             onClick={onClose}
-            className="absolute top-5 right-5 cursor-pointer text-[rgba(255,255,255,0.45)]"
+            className="absolute top-5 right-5 cursor-pointer text-[var(--text\/inverse-muted)] hover:text-[var(--text\/inverse)] transition-colors"
           >
             <svg
               aria-hidden="true"
@@ -155,8 +154,8 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
               <p
                 className="text-[11px] tracking-[0.15em]"
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  color: 'rgba(201,151,58,0.85)',
+                  fontFamily: 'var(--font\\/sans)',
+                  color: 'var(--accent\\/inverse-eyebrow)',
                 }}
               >
                 COMING SOON
@@ -164,8 +163,8 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
               <h2
                 className="mt-4 text-4xl leading-[1.1] md:text-[42px]"
                 style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  color: 'white',
+                  fontFamily: 'var(--font\\/serif)',
+                  color: 'var(--text\\/inverse)',
                   fontWeight: 400,
                 }}
               >
@@ -174,8 +173,8 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
               <p
                 className="mt-4 text-[15px] leading-[1.6]"
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  color: 'rgba(255,255,255,0.55)',
+                  fontFamily: 'var(--font\\/sans)',
+                  color: 'var(--text\\/inverse-secondary)',
                 }}
               >
                 Enter your email. We&apos;ll notify you the moment tempo launches.
@@ -191,19 +190,19 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
                     if (error) setError(null);
                   }}
                   placeholder="your@email.com"
-                  className="h-14 w-full rounded-full border text-white placeholder:text-[rgba(255,255,255,0.3)] focus:outline-none"
+                  className="h-14 w-full rounded-full border text-[var(--text\/inverse)] placeholder:text-[var(--text\/inverse-placeholder)] focus:outline-none transition-colors"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: 'var(--font\\/sans)',
                     fontSize: '16px',
-                    backgroundColor: 'rgba(255,255,255,0.06)',
-                    borderColor: 'rgba(255,255,255,0.25)',
+                    backgroundColor: 'var(--surface\\/glass-subtle)',
+                    borderColor: 'var(--border\\/inverse-interactive)',
                     padding: '0 24px',
                   }}
                   onFocus={(event) => {
-                    event.currentTarget.style.borderColor = 'rgba(201,151,58,0.6)';
+                    event.currentTarget.style.borderColor = 'var(--accent\\/default)';
                   }}
                   onBlur={(event) => {
-                    event.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+                    event.currentTarget.style.borderColor = 'var(--border\\/inverse-interactive)';
                   }}
                 />
                 {error && (
@@ -211,8 +210,8 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
                     role="alert"
                     className="mt-2 text-[13px]"
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      color: 'rgba(201,151,58,0.85)',
+                      fontFamily: 'var(--font\\/sans)',
+                      color: 'var(--status\\/error-dark)',
                     }}
                   >
                     Please enter a valid email.
@@ -220,11 +219,10 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
                 )}
                 <button
                   type="submit"
-                  className="mt-3 h-14 w-full rounded-full text-[15px] font-medium text-white transition-colors hover:bg-[rgba(201,151,58,1)]"
+                  className="mt-3 h-14 w-full cursor-pointer rounded-full text-[15px] font-medium text-[var(--text\/on-accent)] bg-[var(--accent\/default)] hover:bg-[var(--accent\/hover)] transition-colors"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: 'var(--font\\/sans)',
                     fontWeight: 500,
-                    backgroundColor: 'rgba(201,151,58,0.9)',
                     border: 'none',
                   }}
                 >
@@ -253,8 +251,8 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
                 <p
                   className="relative z-10 text-center text-[32px] leading-[1.1]"
                   style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    color: 'white',
+                    fontFamily: 'var(--font\\/serif)',
+                    color: 'var(--text\\/inverse)',
                     fontWeight: 400,
                   }}
                 >

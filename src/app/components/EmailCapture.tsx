@@ -37,13 +37,14 @@ export const EmailCapture = () => {
     >
       <style>{`
         .tempo-email-submit-btn {
-          background-color: #C9973A !important;
-          color: #FFFFFF !important;
+          background-color: var(--accent\\/default) !important;
+          color: var(--text\\/on-accent) !important;
+          font-weight: 500 !important;
           border: none !important;
           transition: background-color 0.2s ease !important;
         }
         .tempo-email-submit-btn:hover {
-          background-color: #8B6420 !important;
+          background-color: var(--accent\\/hover) !important;
         }
         @keyframes tempo-email-ripple {
           0% {
@@ -66,7 +67,7 @@ export const EmailCapture = () => {
           width: 8rem;
           aspect-ratio: 1;
           box-sizing: border-box;
-          border: 1px solid #C9973A;
+          border: 1px solid var(--accent\\/default);
           border-radius: 50%;
           background-color: transparent;
           pointer-events: none;
@@ -113,8 +114,8 @@ export const EmailCapture = () => {
                 id="email-capture-confirmation"
                 className="tempo-email-success-copy relative z-[1] text-center text-4xl md:text-5xl"
                 style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  color: '#1C1410',
+                  fontFamily: 'var(--font\\/serif)',
+                  color: 'var(--text\\/primary)',
                 }}
               >
                 Your tempo is coming.
@@ -127,7 +128,7 @@ export const EmailCapture = () => {
               id="email-capture-headline"
               className="text-4xl md:text-5xl lg:text-6xl font-medium leading-tight mb-6 md:mb-8 tracking-tight"
               style={{
-                fontFamily: "'Cormorant Garamond', serif",
+                fontFamily: 'var(--font\\/serif)',
                 color: 'var(--text\\/primary)',
               }}
             >
@@ -138,7 +139,7 @@ export const EmailCapture = () => {
               id="email-capture-subtext"
               className="text-base md:text-lg font-normal mb-10 md:mb-12 max-w-xl"
               style={{
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: 'var(--font\\/sans)',
                 color: 'var(--text\\/secondary)',
               }}
             >
@@ -169,9 +170,9 @@ export const EmailCapture = () => {
                   }}
                   aria-invalid={error ? 'true' : 'false'}
                   aria-describedby={error ? 'email-capture-error' : undefined}
-                  className="min-w-0 flex-1 border-0 bg-transparent py-3 pl-5 pr-2 text-base outline-none transition-colors"
+                  className="min-w-0 flex-1 border-0 bg-transparent py-3 pl-5 pr-2 text-base outline-none transition-colors placeholder:text-[var(--text\/placeholder)]"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: 'var(--font\\/sans)',
                     color: 'var(--text\\/primary)',
                   }}
                 />
@@ -182,7 +183,7 @@ export const EmailCapture = () => {
                   size="lg"
                   className="tempo-email-submit-btn !m-0 !h-auto !min-h-0 !shrink-0 !rounded-none !rounded-r-full !border-0 !px-5 !py-0 text-base md:text-lg"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: 'var(--font\\/sans)',
                   }}
                 >
                   Join
@@ -194,8 +195,8 @@ export const EmailCapture = () => {
                   role="alert"
                   className="w-full text-center text-sm"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    color: '#8B6420',
+                    fontFamily: 'var(--font\\/sans)',
+                    color: 'var(--status\\/error-light)',
                   }}
                 >
                   {error}

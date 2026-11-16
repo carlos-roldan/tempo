@@ -175,37 +175,41 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
   return (
     <section 
       id="hero-section"
-      className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-start pt-[20vh] md:pt-[25vh] font-['DM_Sans',sans-serif]"
+      className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-start pt-[20vh] md:pt-[25vh]"
       style={{ 
-        backgroundColor: 'rgb(28, 20, 16)',
-        fontFamily: "'DM Sans', sans-serif"
+        backgroundColor: 'var(--bg\\/inverse)',
+        fontFamily: 'var(--font\\/sans)'
       }}
     >
       <style>{`
         .tempo-hero-btn {
           background-color: transparent !important;
-          color: white !important;
-          border: 1px solid white !important;
+          color: var(--text\\/inverse) !important;
+          border: 1px solid var(--border\\/inverse) !important;
           transition: all 0.3s ease !important;
         }
         .tempo-hero-btn:hover {
-          background-color: rgba(255, 255, 255, 0.1) !important;
+          background-color: var(--surface\\/glass-hover) !important;
         }
       
         .tempo-feeling-tag {
           transition: all 0.3s ease;
         }
         .tempo-feeling-tag:hover:not(.tempo-feeling-tag--selected) {
-          border-color: white !important;
-          background-color: rgba(255, 255, 255, 0.2) !important;
+          border-color: var(--border\\/inverse) !important;
+          background-color: var(--surface\\/glass-tag-hover) !important;
+        }
+        .tempo-feeling-tag--selected:hover {
+          background-color: var(--accent\\/hover) !important;
+          border-color: var(--accent\\/hover) !important;
         }
       
         .tempo-category-tag {
           transition: all 0.3s ease;
         }
         .tempo-category-tag:hover, .tempo-category-tag.active {
-          border-color: white !important;
-          background-color: rgba(255, 255, 255, 0.2) !important;
+          border-color: var(--border\\/inverse) !important;
+          background-color: var(--surface\\/glass-tag-hover) !important;
         }
 
         .fade-in {
@@ -224,7 +228,7 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
         .tempo-eq-bar {
           display: block;
           height: 1px;
-          background-color: white;
+          background-color: var(--text\\/inverse);
           transform-origin: right center;
           animation: tempo-eq-pulse 2.8s ease-in-out infinite;
         }
@@ -248,15 +252,19 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
       {/* Nav Layer */}
       <nav className="absolute top-0 left-0 w-full px-6 md:px-10 py-8 flex justify-between items-center z-50">
         <div 
-          className="text-2xl tracking-wide text-white lowercase select-none"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          className="text-2xl tracking-wide lowercase select-none"
+          style={{ 
+            color: 'var(--text\\/inverse)',
+            fontFamily: 'var(--font\\/serif)'
+          }}
         >
           tempo
         </div>
         <button
           type="button"
           aria-label="Menu"
-          className="text-white hover:opacity-80 transition-opacity cursor-pointer flex flex-col justify-between items-end w-7 h-[14px]"
+          className="hover:opacity-80 transition-opacity cursor-pointer flex flex-col justify-between items-end w-7 h-[14px]"
+          style={{ color: 'var(--text\\/inverse)' }}
         >
           <span className="tempo-eq-bar tempo-eq-bar--1" />
           <span className="tempo-eq-bar tempo-eq-bar--2" />
@@ -317,7 +325,7 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
           style={{
             position: 'absolute',
             inset: 0,
-            backgroundColor: 'black',
+            backgroundColor: 'var(--bg\\/black)',
             opacity: isLoopTransitioning ? 1 : 0,
             transition: 'opacity 2s ease-in-out',
             pointerEvents: 'none',
@@ -328,7 +336,7 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
           id="background-overlay"
           className="absolute inset-0" 
           style={{ 
-            backgroundColor: 'rgba(28, 20, 16, 0.55)' // Deep charcoal/slate at 55% opacity
+            backgroundColor: 'var(--scrim\\/hero)'
           }} 
         />
       </div>
@@ -337,7 +345,7 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
         type="button"
         onClick={handleTogglePlayback}
         aria-label={isPaused ? 'Play hero video' : 'Pause hero video'}
-        className="absolute bottom-8 right-4 z-30 w-11 h-11 flex items-center justify-center cursor-pointer text-white/50 hover:text-white/90 transition-colors md:bottom-8"
+        className="absolute bottom-8 right-4 z-30 w-11 h-11 flex items-center justify-center cursor-pointer text-[var(--text\/inverse-muted)] hover:text-[var(--text\/inverse)] transition-colors md:bottom-8"
       >
         {isPaused ? (
           <svg
@@ -377,9 +385,9 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
         <span 
           className="italic font-light text-sm md:text-base mb-1 md:mb-2 drop-shadow-sm"
           style={{ 
-            color: 'var(--nuetral\\/100)',
-            fontFamily: "'DM Sans', sans-serif",
-            letterSpacing: '0.15em'
+            color: 'var(--text\\/inverse-warm)',
+            fontFamily: 'var(--font\\/sans)',
+            letterSpacing: 'var(--tracking\\/eyebrow-sm)'
           }}
         >
           Return to your tempo*
@@ -389,9 +397,9 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
           id="headline"
           className="text-4xl md:text-5xl lg:text-[4.25rem] font-medium leading-tight mt-0 mb-8 md:mb-10 tracking-tight drop-shadow-sm"
           style={{ 
-            color: 'white',
-            fontFamily: "'Cormorant Garamond', serif",
-            lineHeight: '1.1'
+            color: 'var(--text\\/inverse)',
+            fontFamily: 'var(--font\\/serif)',
+            lineHeight: 'var(--leading\\/display)'
           }}
         >
           What rhythm are you seeking?
@@ -425,13 +433,13 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
                       type="button"
                       onClick={() => setActiveFeelingIndex(idx)}
                       className={`tempo-feeling-tag px-6 py-2.5 rounded-full text-sm md:text-base tracking-wide border backdrop-blur-md cursor-pointer ${
-                        isSelected ? 'tempo-feeling-tag--selected' : 'bg-transparent'
+                        isSelected ? 'tempo-feeling-tag--selected font-medium' : 'bg-transparent'
                       }`}
                       style={{ 
-                        color: 'white', 
-                        borderColor: isSelected ? '#C9973A' : 'rgba(255, 255, 255, 0.3)',
-                        backgroundColor: isSelected ? '#C9973A' : 'transparent',
-                        fontFamily: "'DM Sans', sans-serif"
+                        color: isSelected ? 'var(--text\\/on-accent)' : 'var(--text\\/inverse)', 
+                        borderColor: isSelected ? 'var(--accent\\/default)' : 'var(--border\\/inverse-interactive)',
+                        backgroundColor: isSelected ? 'var(--accent\\/default)' : 'transparent',
+                        fontFamily: 'var(--font\\/sans)'
                       }}
                     >
                       {tag}
@@ -446,10 +454,10 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
                     <button 
                       type="button"
                       onClick={() => setIsExpanded(true)}
-                      className="text-sm md:text-base font-light tracking-wide cursor-pointer hover:opacity-80 transition-opacity border-b border-white/60 hover:border-white pb-0.5 fade-in z-20"
+                      className="text-sm md:text-base font-light tracking-wide cursor-pointer hover:opacity-80 transition-opacity border-b border-[var(--border\/inverse-subtle)] hover:border-[var(--border\/inverse)] pb-0.5 fade-in z-20"
                       style={{ 
-                        color: 'white',
-                        fontFamily: "'DM Sans', sans-serif"
+                        color: 'var(--text\\/inverse)',
+                        fontFamily: 'var(--font\\/sans)'
                       }}
                     >
                       More tempos
@@ -464,11 +472,11 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
                           onClick={() => handleCategorySelect(cat)}
                           className={`text-sm md:text-base font-light tracking-wide cursor-pointer transition-all pb-0.5 border-b ${
                             activeCategory === cat 
-                              ? 'border-white/100 text-white' 
-                              : 'border-transparent text-white/60 hover:text-white hover:border-white/60'
+                              ? 'border-[var(--border\/inverse)] text-[var(--text\/inverse)]' 
+                              : 'border-transparent text-[var(--text\/inverse-subtle)] hover:text-[var(--text\/inverse)] hover:border-[var(--border\/inverse-subtle)]'
                           }`}
                           style={{ 
-                            fontFamily: "'DM Sans', sans-serif"
+                            fontFamily: 'var(--font\\/sans)'
                           }}
                         >
                           {cat}
@@ -491,7 +499,7 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
               className="tempo-hero-btn !px-12 !py-3.5 text-lg md:text-xl !rounded-full shadow-sm hover:shadow-md transition-all"
               style={{ 
                 minWidth: '220px',
-                fontFamily: "'DM Sans', sans-serif"
+                fontFamily: 'var(--font\\/sans)'
               }}
             >
               Begin journey
@@ -500,8 +508,8 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
           <p
             className="mt-16 max-w-[480px] text-xs md:text-[13px] leading-relaxed text-center"
             style={{
-              color: 'rgba(255, 255, 255, 0.75)',
-              fontFamily: "'DM Sans', sans-serif",
+              color: 'var(--text\\/inverse-secondary)',
+              fontFamily: 'var(--font\\/sans)',
               fontWeight: 400,
             }}
           >

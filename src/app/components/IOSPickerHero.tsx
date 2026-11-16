@@ -30,10 +30,10 @@ type PickerColumnProps = {
 };
 
 function getItemRowOpacity(distance: number) {
-  if (distance === 0) return 1;
-  if (distance === 1) return 0.45;
-  if (distance === 2) return 0.22;
-  return 0.1;
+  if (distance === 0) return 'var(--opacity\\/picker-selected)';
+  if (distance === 1) return 'var(--opacity\\/picker-near)';
+  if (distance === 2) return 'var(--opacity\\/picker-far)';
+  return 'var(--opacity\\/picker-distant)';
 }
 
 function getItemTypography(distance: number) {
@@ -96,14 +96,14 @@ function PickerColumn({ items, selectedIndex, onSelectIndex, scrollKey }: Picker
   return (
     <div
       className="relative min-w-0 flex-1"
-      style={{ height: VIEWPORT_HEIGHT, fontFamily: "'DM Sans', sans-serif" }}
+      style={{ height: VIEWPORT_HEIGHT, fontFamily: 'var(--font\\/sans)' }}
     >
       {/* Fade mask */}
       <div
         className="pointer-events-none absolute inset-0 z-[2]"
         style={{
           background:
-            'linear-gradient(180deg, rgba(0,0,0,0) 0%, transparent 25%, transparent 75%, rgba(0,0,0,0) 100%)',
+            'linear-gradient(180deg, transparent 0%, transparent 25%, transparent 75%, transparent 100%)',
         }}
         aria-hidden
       />
@@ -134,7 +134,7 @@ function PickerColumn({ items, selectedIndex, onSelectIndex, scrollKey }: Picker
                   scrollSnapAlign: 'center',
                   opacity: rowOpacity,
                   transition: 'opacity 0.2s ease, font-size 0.2s ease, font-weight 0.2s ease',
-                  color: 'rgba(255,255,255,0.9)',
+                  color: 'var(--text\\/inverse)',
                   fontSize,
                   fontWeight,
                 }}
@@ -179,7 +179,7 @@ export function IOSPickerHero({
   return (
     <div
       className="relative mx-auto w-full max-w-[360px] px-1"
-      style={{ fontFamily: "'DM Sans', sans-serif" }}
+      style={{ fontFamily: 'var(--font\\/sans)' }}
       onTouchStart={(e) => e.stopPropagation()}
       onTouchMove={(e) => e.stopPropagation()}
     >
@@ -190,8 +190,8 @@ export function IOSPickerHero({
           height: ITEM_H,
           transform: 'translateY(-50%)',
           borderRadius: '100px',
-          backgroundColor: 'rgba(255,255,255,0.15)',
-          border: '1px solid rgba(255,255,255,0.30)',
+          backgroundColor: 'var(--surface\\/glass-picker)',
+          border: '1px solid var(--border\\/inverse-interactive)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
         }}
@@ -205,7 +205,7 @@ export function IOSPickerHero({
             left: '50%',
             width: '0.5px',
             transform: 'translateX(-50%)',
-            backgroundColor: 'rgba(255,255,255,0.25)',
+            backgroundColor: 'var(--border\\/inverse-divider)',
           }}
           aria-hidden
         />

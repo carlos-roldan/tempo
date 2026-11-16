@@ -14,12 +14,12 @@ export const FeaturedJourney = ({ onBeginThisJourney }: FeaturedJourneyProps) =>
       <style>{`
         .tempo-featured-btn {
           background-color: transparent !important;
-          color: white !important;
-          border: 1px solid white !important;
+          color: var(--text\\/inverse) !important;
+          border: 1px solid var(--border\\/inverse) !important;
           transition: all 0.3s ease !important;
         }
         .tempo-featured-btn:hover {
-          background-color: rgba(255, 255, 255, 0.1) !important;
+          background-color: var(--surface\\/glass-hover) !important;
         }
       `}</style>
       
@@ -39,7 +39,7 @@ export const FeaturedJourney = ({ onBeginThisJourney }: FeaturedJourneyProps) =>
           id="featured-bg-overlay"
           className="absolute inset-0" 
           style={{ 
-            backgroundColor: 'rgba(28, 20, 16, 0.65)' // Deep charcoal/slate at 65% opacity for text legibility
+            backgroundColor: 'var(--scrim\\/featured)'
           }} 
         />
       </div>
@@ -53,8 +53,8 @@ export const FeaturedJourney = ({ onBeginThisJourney }: FeaturedJourneyProps) =>
           id="featured-eyebrow"
           className="uppercase text-xs md:text-sm tracking-[0.2em] mb-4 md:mb-6"
           style={{ 
-            color: 'var(--nuetral\\/200)',
-            fontFamily: "'DM Sans', sans-serif"
+            color: 'var(--text\\/inverse-eyebrow)',
+            fontFamily: 'var(--font\\/sans)'
           }}
         >
           Featured Journey
@@ -64,8 +64,8 @@ export const FeaturedJourney = ({ onBeginThisJourney }: FeaturedJourneyProps) =>
           id="featured-headline"
           className="text-4xl md:text-5xl lg:text-6xl font-medium leading-tight mb-6 md:mb-8 tracking-tight drop-shadow-sm"
           style={{ 
-            color: 'white',
-            fontFamily: "'Cormorant Garamond', serif"
+            color: 'var(--text\\/inverse)',
+            fontFamily: 'var(--font\\/serif)'
           }}
         >
           The Iberian Pilgrimage
@@ -75,8 +75,8 @@ export const FeaturedJourney = ({ onBeginThisJourney }: FeaturedJourneyProps) =>
           id="featured-body"
           className="text-base md:text-lg font-normal leading-relaxed max-w-2xl mb-6 md:mb-8"
           style={{ 
-            color: 'var(--nuetral\\/100)',
-            fontFamily: "'DM Sans', sans-serif"
+            color: 'var(--text\\/inverse-warm)',
+            fontFamily: 'var(--font\\/sans)'
           }}
         >
           Stone paths. Candlelit cathedrals. The Atlantic at the edge of the world.
@@ -86,8 +86,8 @@ export const FeaturedJourney = ({ onBeginThisJourney }: FeaturedJourneyProps) =>
           id="featured-tags-container"
           className="flex flex-row items-center justify-center md:justify-start flex-wrap gap-2 md:gap-3 mb-10 md:mb-12"
           style={{ 
-            color: 'var(--nuetral\\/100)',
-            fontFamily: "'DM Sans', sans-serif"
+            color: 'var(--text\\/inverse-warm)',
+            fontFamily: 'var(--font\\/sans)'
           }}
         >
           <span id="featured-tag-1" className="text-sm md:text-base tracking-wide lowercase">spiritual</span>
@@ -104,7 +104,7 @@ export const FeaturedJourney = ({ onBeginThisJourney }: FeaturedJourneyProps) =>
           onClick={onBeginThisJourney}
           className="tempo-featured-btn !px-10 !py-3.5 text-base md:text-lg !rounded-full shadow-sm hover:shadow-md transition-all"
           style={{ 
-            fontFamily: "'DM Sans', sans-serif"
+            fontFamily: 'var(--font\\/sans)'
           }}
         >
           Begin this journey

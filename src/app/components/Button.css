@@ -16,7 +16,7 @@
 
 .tempo-btn-primary {
   background-color: var(--accent\/default);
-  color: var(--text\/inverse);
+  color: var(--text\/on-accent);
   border: 1px solid var(--accent\/default);
 }
 

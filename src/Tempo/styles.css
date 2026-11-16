@@ -1,30 +1,96 @@
 :root {
+  /* Primitive Neutral Scale (Warm Espresso & Parchment) */
+  --nuetral\/white: #FFFFFF;
   --nuetral\/50: #FAFAF8;
   --nuetral\/100: #F5F0E8;
   --nuetral\/200: #E8DDD0;
-  --nuetral\/400: #A89880;
-  --nuetral\/600: #6B5744;
+  --nuetral\/300: #8F7E6A;
+  --nuetral\/400: #756350;
+  --nuetral\/600: #594736;
   --nuetral\/900: #1C1410;
-  --nuetral\/white: #FFF;
+  --nuetral\/black: #000000;
+
+  /* Primitive Editorial Gold Scale */
   --gold\/100: #FDF3DC;
   --gold\/300: #F0C96B;
+  --gold\/400: #DEB04E;
   --gold\/500: #C9973A;
+  --gold\/600: #9A7B4F;
   --gold\/700: #8B6420;
+
+  /* Primitive Slate Scale */
   --slate\/400: #8C9AAB;
   --slate\/600: #4A5568;
   --slate\/900: #1A202C;
+
+  /* Semantic Backgrounds & Surfaces */
   --bg\/primary: var(--nuetral\/white);
   --bg\/secondary: var(--nuetral\/50);
   --bg\/warm: var(--nuetral\/100);
   --bg\/inverse: var(--nuetral\/900);
+  --bg\/black: var(--nuetral\/black);
+
+  --surface\/glass-subtle: rgba(255, 255, 255, 0.06);
+  --surface\/glass-hover: rgba(255, 255, 255, 0.10);
+  --surface\/glass-picker: rgba(255, 255, 255, 0.15);
+  --surface\/glass-tag-hover: rgba(255, 255, 255, 0.20);
+  --surface\/video-controls: rgba(20, 20, 20, 0.55);
+
+  /* Media Scrims & Modal Backdrops (WCAG AA ≥ 4.5:1 Guaranteed) */
+  --scrim\/category: rgba(28, 20, 16, 0.58);
+  --scrim\/hero: rgba(28, 20, 16, 0.60);
+  --scrim\/featured: rgba(28, 20, 16, 0.65);
+  --scrim\/modal-backdrop: radial-gradient(ellipse at center, rgba(28, 20, 16, 0.75) 0%, rgba(0, 0, 0, 0.88) 100%);
+
+  /* Semantic Text Colors */
   --text\/primary: var(--nuetral\/900);
   --text\/secondary: var(--nuetral\/600);
   --text\/placeholder: var(--nuetral\/400);
   --text\/inverse: var(--nuetral\/white);
-  --border\/default: var(--nuetral\/200);
+  --text\/on-accent: var(--nuetral\/900);
+  --text\/inverse-warm: var(--nuetral\/100);
+  --text\/inverse-eyebrow: var(--nuetral\/200);
+  --text\/inverse-secondary: rgba(255, 255, 255, 0.75);
+  --text\/inverse-muted: rgba(255, 255, 255, 0.65);
+  --text\/inverse-subtle: rgba(255, 255, 255, 0.60);
+  --text\/inverse-placeholder: rgba(255, 255, 255, 0.55);
+
+  /* Semantic Borders & Dividers */
+  --border\/default: var(--nuetral\/300);
+  --border\/subtle: var(--nuetral\/200);
+  --border\/inverse: var(--nuetral\/white);
+  --border\/inverse-interactive: rgba(255, 255, 255, 0.45);
+  --border\/inverse-subtle: rgba(255, 255, 255, 0.60);
+  --border\/inverse-divider: rgba(255, 255, 255, 0.25);
+  --border\/accent-ring: rgba(201, 151, 58, 0.60);
+
+  /* Semantic Accents & Validation Status (Option A: Espresso on Luminous Gold) */
   --accent\/default: var(--gold\/500);
-  --accent\/hover: var(--gold\/700);
+  --accent\/hover: var(--gold\/400);
   --accent\/subtle: var(--gold\/100);
+  --accent\/editorial-quote: var(--gold\/600);
+  --accent\/inverse-eyebrow: var(--gold\/400);
+  --status\/error-light: var(--gold\/700);
+  --status\/error-dark: var(--gold\/400);
+
+  /* Opacity Hierarchy Tokens (Mobile Scroll Wheel) */
+  --opacity\/picker-selected: 1;
+  --opacity\/picker-near: 0.55;
+  --opacity\/picker-far: 0.45;
+  --opacity\/picker-distant: 0.35;
+
+  /* Editorial Typography Tokens */
+  --font\/serif: 'Cormorant Garamond', serif;
+  --font\/sans: 'DM Sans', sans-serif;
+  --tracking\/tight: -0.025em;
+  --tracking\/wide: 0.025em;
+  --tracking\/eyebrow-sm: 0.15em;
+  --tracking\/eyebrow: 0.2em;
+  --leading\/display: 1.1;
+  --leading\/snug: 1.25;
+  --leading\/relaxed: 1.625;
+
+  /* Spacing Scale */
   --spacing\/1: 4;
   --spacing\/2: 8;
   --spacing\/3: 12;
@@ -35,4 +101,3 @@
   --spacing\/16: 64;
   --spacing\/20: 80;
 }
-

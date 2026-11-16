@@ -23,8 +23,8 @@ export const HowItWorks = () => {
             id="step-1-number"
             className="text-4xl md:text-5xl font-light mb-6 md:mb-8"
             style={{ 
-              fontFamily: "'Cormorant Garamond', serif",
-              color: 'var(--nuetral\\/400)'
+              fontFamily: 'var(--font\\/serif)',
+              color: 'var(--text\\/placeholder)'
             }}
           >
             1
@@ -33,7 +33,7 @@ export const HowItWorks = () => {
             id="step-1-headline"
             className="text-xl md:text-2xl font-medium mb-4 tracking-wide"
             style={{ 
-              fontFamily: "'DM Sans', sans-serif"
+              fontFamily: 'var(--font\\/sans)'
             }}
           >
             Share your rhythm
@@ -42,7 +42,7 @@ export const HowItWorks = () => {
             id="step-1-body"
             className="text-base md:text-lg font-normal leading-relaxed max-w-[280px]"
             style={{ 
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: 'var(--font\\/sans)',
               color: 'var(--text\\/secondary)'
             }}
           >
@@ -59,8 +59,8 @@ export const HowItWorks = () => {
             id="step-2-number"
             className="text-4xl md:text-5xl font-light mb-6 md:mb-8"
             style={{ 
-              fontFamily: "'Cormorant Garamond', serif",
-              color: 'var(--nuetral\\/400)'
+              fontFamily: 'var(--font\\/serif)',
+              color: 'var(--text\\/placeholder)'
             }}
           >
             2
@@ -69,7 +69,7 @@ export const HowItWorks = () => {
             id="step-2-headline"
             className="text-xl md:text-2xl font-medium mb-4 tracking-wide"
             style={{ 
-              fontFamily: "'DM Sans', sans-serif"
+              fontFamily: 'var(--font\\/sans)'
             }}
           >
             tempo listens
@@ -78,7 +78,7 @@ export const HowItWorks = () => {
             id="step-2-body"
             className="text-base md:text-lg font-normal leading-relaxed max-w-[280px]"
             style={{ 
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: 'var(--font\\/sans)',
               color: 'var(--text\\/secondary)'
             }}
           >
@@ -95,8 +95,8 @@ export const HowItWorks = () => {
             id="step-3-number"
             className="text-4xl md:text-5xl font-light mb-6 md:mb-8"
             style={{ 
-              fontFamily: "'Cormorant Garamond', serif",
-              color: 'var(--nuetral\\/400)'
+              fontFamily: 'var(--font\\/serif)',
+              color: 'var(--text\\/placeholder)'
             }}
           >
             3
@@ -105,7 +105,7 @@ export const HowItWorks = () => {
             id="step-3-headline"
             className="text-xl md:text-2xl font-medium mb-4 tracking-wide"
             style={{ 
-              fontFamily: "'DM Sans', sans-serif"
+              fontFamily: 'var(--font\\/sans)'
             }}
           >
             Begin your journey
@@ -114,7 +114,7 @@ export const HowItWorks = () => {
             id="step-3-body"
             className="text-base md:text-lg font-normal leading-relaxed max-w-[280px]"
             style={{ 
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: 'var(--font\\/sans)',
               color: 'var(--text\\/secondary)'
             }}
           >
