@@ -99,6 +99,28 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
           animation-iteration-count: 1;
           animation-fill-mode: forwards;
         }
+        .tempo-lead-close-btn {
+          color: var(--text\\/inverse-muted);
+          transition: color 0.2s ease;
+        }
+        .tempo-lead-close-btn:hover {
+          color: var(--text\\/inverse);
+        }
+        .tempo-lead-input {
+          color: var(--text\\/inverse);
+        }
+        .tempo-lead-input::placeholder {
+          color: var(--text\\/inverse-placeholder);
+          opacity: 1;
+        }
+        .tempo-lead-submit-btn {
+          background-color: var(--accent\\/default);
+          color: var(--text\\/on-accent);
+          transition: background-color 0.2s ease;
+        }
+        .tempo-lead-submit-btn:hover {
+          background-color: var(--accent\\/hover);
+        }
       `}</style>
 
       <div
@@ -119,10 +141,11 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
           role="dialog"
           aria-modal="true"
           aria-label="Lead capture"
-          className={`relative h-full w-full bg-[var(--bg\/inverse)] px-7 pt-16 pb-12 md:h-auto md:max-w-[480px] md:rounded-[20px] md:px-10 md:pt-14 md:pb-12 ${
+          className={`relative h-full w-full px-7 pt-16 pb-12 md:h-auto md:max-w-[480px] md:rounded-[20px] md:px-10 md:pt-14 md:pb-12 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
           }`}
           style={{
+            backgroundColor: 'var(--bg\\/inverse)',
             transition:
               'transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s cubic-bezier(0.16,1,0.3,1)',
             overflow: 'hidden',
@@ -133,7 +156,7 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
             type="button"
             aria-label="Close modal"
             onClick={onClose}
-            className="absolute top-5 right-5 cursor-pointer text-[var(--text\/inverse-muted)] hover:text-[var(--text\/inverse)] transition-colors"
+            className="tempo-lead-close-btn absolute top-5 right-5 cursor-pointer"
           >
             <svg
               aria-hidden="true"
@@ -190,10 +213,11 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
                     if (error) setError(null);
                   }}
                   placeholder="your@email.com"
-                  className="h-14 w-full rounded-full border text-[var(--text\/inverse)] placeholder:text-[var(--text\/inverse-placeholder)] focus:outline-none transition-colors"
+                  className="tempo-lead-input h-14 w-full rounded-full border focus:outline-none transition-colors"
                   style={{
                     fontFamily: 'var(--font\\/sans)',
                     fontSize: '16px',
+                    color: 'var(--text\\/inverse)',
                     backgroundColor: 'var(--surface\\/glass-subtle)',
                     borderColor: 'var(--border\\/inverse-interactive)',
                     padding: '0 24px',
@@ -219,7 +243,7 @@ export function LeadCaptureModal({ isOpen, setIsOpen }: LeadCaptureModalProps) {
                 )}
                 <button
                   type="submit"
-                  className="mt-3 h-14 w-full cursor-pointer rounded-full text-[15px] font-medium text-[var(--text\/on-accent)] bg-[var(--accent\/default)] hover:bg-[var(--accent\/hover)] transition-colors"
+                  className="tempo-lead-submit-btn mt-3 h-14 w-full cursor-pointer rounded-full text-[15px] font-medium"
                   style={{
                     fontFamily: 'var(--font\\/sans)',
                     fontWeight: 500,

@@ -514,6 +514,14 @@ export function DesignSystem() {
         .ds-btn-v2:hover {
           background-color: var(--accent\\/hover);
         }
+        .ds-input-light::placeholder {
+          color: var(--text\\/placeholder);
+          opacity: 1;
+        }
+        .ds-input-dark::placeholder {
+          color: var(--text\\/inverse-placeholder);
+          opacity: 1;
+        }
       `}</style>
 
       {/* Sticky Top Header */}
@@ -878,7 +886,7 @@ export function DesignSystem() {
                     type="email"
                     readOnly
                     placeholder="Enter your email (5.74:1 AA)"
-                    className="min-w-0 flex-1 border-0 bg-transparent py-2.5 pl-4 pr-2 text-sm outline-none placeholder:text-[var(--text\/placeholder)]"
+                    className="ds-input-light min-w-0 flex-1 border-0 bg-transparent py-2.5 pl-4 pr-2 text-sm outline-none"
                     style={{ color: 'var(--text\\/primary)' }}
                   />
                   <button
@@ -1582,8 +1590,9 @@ export function DesignSystem() {
                     type="email"
                     readOnly
                     placeholder="your@email.com (5.72:1 AA)"
-                    className="mt-4 h-11 w-full rounded-full border px-4 text-xs text-[var(--text\/inverse)] placeholder:text-[var(--text\/inverse-placeholder)]"
+                    className="ds-input-dark mt-4 h-11 w-full rounded-full border px-4 text-xs"
                     style={{
+                      color: 'var(--text\\/inverse)',
                       backgroundColor: 'var(--surface\\/glass-subtle)',
                       borderColor: 'var(--border\\/inverse-interactive)',
                     }}

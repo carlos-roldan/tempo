@@ -212,6 +212,38 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
           background-color: var(--surface\\/glass-tag-hover) !important;
         }
 
+        .tempo-more-tempos-trigger {
+          color: var(--text\\/inverse) !important;
+          border-bottom: 1px solid var(--border\\/inverse-subtle);
+          transition: opacity 0.2s ease, border-color 0.2s ease;
+        }
+        .tempo-more-tempos-trigger:hover {
+          border-bottom-color: var(--border\\/inverse);
+        }
+
+        .tempo-more-tempos-option {
+          color: var(--text\\/inverse) !important;
+          border-bottom: 1px solid transparent;
+          transition: border-color 0.2s ease, opacity 0.2s ease;
+        }
+        .tempo-more-tempos-option:hover {
+          color: var(--text\\/inverse) !important;
+          border-bottom-color: var(--border\\/inverse-subtle);
+        }
+        .tempo-more-tempos-option--active,
+        .tempo-more-tempos-option--active:hover {
+          color: var(--text\\/inverse) !important;
+          border-bottom-color: var(--border\\/inverse);
+        }
+
+        .tempo-hero-pause-btn {
+          color: var(--text\\/inverse-muted);
+          transition: color 0.2s ease;
+        }
+        .tempo-hero-pause-btn:hover {
+          color: var(--text\\/inverse);
+        }
+
         .fade-in {
           animation: fadeIn 0.4s ease-out forwards;
         }
@@ -345,7 +377,7 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
         type="button"
         onClick={handleTogglePlayback}
         aria-label={isPaused ? 'Play hero video' : 'Pause hero video'}
-        className="absolute bottom-8 right-4 z-30 w-11 h-11 flex items-center justify-center cursor-pointer text-[var(--text\/inverse-muted)] hover:text-[var(--text\/inverse)] transition-colors md:bottom-8"
+        className="tempo-hero-pause-btn absolute bottom-8 right-4 z-30 w-11 h-11 flex items-center justify-center cursor-pointer md:bottom-8"
       >
         {isPaused ? (
           <svg
@@ -454,7 +486,7 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
                     <button 
                       type="button"
                       onClick={() => setIsExpanded(true)}
-                      className="text-sm md:text-base font-light tracking-wide cursor-pointer hover:opacity-80 transition-opacity border-b border-[var(--border\/inverse-subtle)] hover:border-[var(--border\/inverse)] pb-0.5 fade-in z-20"
+                      className="tempo-more-tempos-trigger text-sm md:text-base font-light tracking-wide cursor-pointer hover:opacity-80 pb-0.5 fade-in z-20"
                       style={{ 
                         color: 'var(--text\\/inverse)',
                         fontFamily: 'var(--font\\/sans)'
@@ -470,12 +502,14 @@ export const Hero = ({ onBeginJourney }: HeroProps) => {
                           key={cat}
                           type="button"
                           onClick={() => handleCategorySelect(cat)}
-                          className={`text-sm md:text-base font-light tracking-wide cursor-pointer transition-all pb-0.5 border-b ${
+                          className={`tempo-more-tempos-option text-sm md:text-base font-light tracking-wide cursor-pointer pb-0.5 ${
                             activeCategory === cat 
-                              ? 'border-[var(--border\/inverse)] text-[var(--text\/inverse)]' 
-                              : 'border-transparent text-[var(--text\/inverse-subtle)] hover:text-[var(--text\/inverse)] hover:border-[var(--border\/inverse-subtle)]'
+                              ? 'tempo-more-tempos-option--active' 
+                              : ''
                           }`}
                           style={{ 
+                            color: 'var(--text\\/inverse)',
+                            borderBottomColor: activeCategory === cat ? 'var(--border\\/inverse)' : undefined,
                             fontFamily: 'var(--font\\/sans)'
                           }}
                         >

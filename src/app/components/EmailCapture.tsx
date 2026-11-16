@@ -46,6 +46,10 @@ export const EmailCapture = () => {
         .tempo-email-submit-btn:hover {
           background-color: var(--accent\\/hover) !important;
         }
+        .tempo-email-input::placeholder {
+          color: var(--text\\/placeholder);
+          opacity: 1;
+        }
         @keyframes tempo-email-ripple {
           0% {
             transform: translate(-50%, -50%) scale(0);
@@ -170,7 +174,7 @@ export const EmailCapture = () => {
                   }}
                   aria-invalid={error ? 'true' : 'false'}
                   aria-describedby={error ? 'email-capture-error' : undefined}
-                  className="min-w-0 flex-1 border-0 bg-transparent py-3 pl-5 pr-2 text-base outline-none transition-colors placeholder:text-[var(--text\/placeholder)]"
+                  className="tempo-email-input min-w-0 flex-1 border-0 bg-transparent py-3 pl-5 pr-2 text-base outline-none transition-colors"
                   style={{
                     fontFamily: 'var(--font\\/sans)',
                     color: 'var(--text\\/primary)',
