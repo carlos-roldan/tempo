@@ -64,18 +64,35 @@ export function Task1BInteractionLab() {
           background-color: var(--surface\\/glass-hover);
         }
 
-        .lab-expand-anim {
-          animation: labReveal 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .lab-collapse-grid {
+          display: grid;
+          width: 100%;
+          transition:
+            grid-template-rows 220ms cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
+            transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+          transform-origin: top center;
+          will-change: grid-template-rows, opacity, transform;
         }
-        @keyframes labReveal {
-          from {
-            opacity: 0;
-            transform: translateY(-6px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        .lab-collapse-grid--open {
+          grid-template-rows: 1fr;
+          opacity: 1;
+          transform: translateY(0) scaleY(1);
+          pointer-events: auto;
+        }
+        .lab-collapse-grid--closed {
+          grid-template-rows: 0fr;
+          opacity: 0;
+          transform: translateY(-6px) scaleY(0.96);
+          pointer-events: none;
+        }
+        .lab-collapse-inner {
+          overflow: hidden;
+          min-height: 0;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
       `}</style>
 
@@ -151,9 +168,9 @@ export function Task1BInteractionLab() {
           </button>
         </div>
 
-        {/* Simulated Hero Stage */}
+        {/* Simulated Hero Stage — Top-anchored so headline never shifts */}
         <div
-          className="relative flex min-h-[460px] flex-col items-center justify-center overflow-hidden px-6 py-14 text-center"
+          className="relative flex min-h-[540px] flex-col items-center justify-start overflow-hidden px-6 pt-12 pb-12 text-center"
           style={{ backgroundColor: 'var(--bg\\/inverse)' }}
         >
           <img
@@ -187,8 +204,14 @@ export function Task1BInteractionLab() {
               What rhythm are you seeking?
             </h4>
 
-            {!expanded ? (
-              <>
+            {/* Collapsed State */}
+            <div
+              aria-hidden={expanded}
+              className={`lab-collapse-grid ${
+                !expanded ? 'lab-collapse-grid--open' : 'lab-collapse-grid--closed'
+              }`}
+            >
+              <div className="lab-collapse-inner">
                 <div className="mb-4 flex w-full flex-wrap items-center justify-center gap-3 md:gap-3.5">
                   {LAB_CATEGORIES[category].tags.map((tag, idx) => {
                     const isSelected = feelingIdx === idx;
@@ -196,6 +219,7 @@ export function Task1BInteractionLab() {
                       <button
                         key={tag}
                         type="button"
+                        tabIndex={expanded ? -1 : 0}
                         onClick={() => setFeelingIdx(idx)}
                         className={`lab-pill-primary cursor-pointer rounded-full border px-6 py-2.5 text-sm tracking-wide backdrop-blur-md md:text-base ${
                           isSelected ? 'lab-pill-primary--selected font-medium' : ''
@@ -213,148 +237,165 @@ export function Task1BInteractionLab() {
                     );
                   })}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setExpanded(true)}
-                  className="lab-expand-anim cursor-pointer border-b pb-0.5 text-sm font-light tracking-wide transition-opacity hover:opacity-85 md:text-base"
-                  style={{
-                    color: 'var(--text\\/inverse)',
-                    borderColor: 'var(--border\\/inverse-subtle)',
-                  }}
-                >
-                  More tempos
-                </button>
-              </>
-            ) : (
-              /* Glassmorphic Dual-Column Selector Panel */
-              <div
-                className="lab-expand-anim w-full max-w-2xl overflow-hidden rounded-2xl border p-5 text-left backdrop-blur-xl md:p-6"
-                style={{
-                  backgroundColor: 'var(--scrim\\/featured)',
-                  borderColor: 'var(--border\\/inverse-interactive)',
-                }}
-              >
-                <div
-                  className="mb-4 flex items-center justify-between border-b pb-3"
-                  style={{ borderColor: 'var(--border\\/inverse-divider)' }}
-                >
-                  <div className="flex items-center gap-2 text-xs tracking-wider uppercase">
-                    <span style={{ color: 'var(--accent\\/inverse-eyebrow)' }}>Selected Rhythm:</span>
-                    <span className="font-medium" style={{ color: 'var(--text\\/inverse)' }}>
-                      {category} · {LAB_CATEGORIES[category].tags[feelingIdx]}
-                    </span>
-                  </div>
+                <div className="flex min-h-[36px] w-full items-start justify-center">
                   <button
                     type="button"
-                    onClick={() => setExpanded(false)}
-                    className="cursor-pointer text-xs tracking-wide transition-colors"
-                    style={{ color: 'var(--text\\/inverse-secondary)' }}
+                    tabIndex={expanded ? -1 : 0}
+                    onClick={() => setExpanded(true)}
+                    className="cursor-pointer border-b pb-0.5 text-sm font-light tracking-wide transition-opacity hover:opacity-85 md:text-base"
+                    style={{
+                      color: 'var(--text\\/inverse)',
+                      borderColor: 'var(--border\\/inverse-subtle)',
+                    }}
                   >
-                    Collapse ✕
+                    More tempos
                   </button>
                 </div>
+              </div>
+            </div>
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
-                  {/* Left Column: 5 Tempo Categories */}
+            {/* Expanded State: Glassmorphic Dual-Column Selector Panel */}
+            <div
+              aria-hidden={!expanded}
+              className={`lab-collapse-grid ${
+                expanded ? 'lab-collapse-grid--open' : 'lab-collapse-grid--closed'
+              }`}
+            >
+              <div className="lab-collapse-inner">
+                <div
+                  className="w-full max-w-2xl overflow-hidden rounded-2xl border p-5 text-left backdrop-blur-xl md:p-6"
+                  style={{
+                    backgroundColor: 'var(--scrim\\/featured)',
+                    borderColor: 'var(--border\\/inverse-interactive)',
+                  }}
+                >
                   <div
-                    className="flex flex-col space-y-1.5 md:col-span-5 md:border-r md:pr-5"
+                    className="mb-4 flex items-center justify-between border-b pb-3"
                     style={{ borderColor: 'var(--border\\/inverse-divider)' }}
                   >
-                    <span
-                      className="mb-1 px-3 text-[11px] tracking-[0.18em] uppercase"
-                      style={{ color: 'var(--text\\/inverse-muted)' }}
-                    >
-                      1. Choose Tempo
-                    </span>
-                    {CATEGORY_KEYS.map((cat) => {
-                      const isActive = category === cat;
-                      return (
-                        <button
-                          key={cat}
-                          type="button"
-                          onClick={() => {
-                            setCategory(cat);
-                            setFeelingIdx(0);
-                          }}
-                          className={`lab-drawer-row flex w-full cursor-pointer items-center justify-between rounded-full px-4 py-2 text-left text-sm ${
-                            isActive ? 'lab-drawer-row--active font-medium' : 'font-normal'
-                          }`}
-                          style={{
-                            color: 'var(--text\\/inverse)',
-                            backgroundColor: isActive
-                              ? 'var(--surface\\/glass-picker)'
-                              : 'transparent',
-                            border: isActive
-                              ? '1px solid var(--border\\/inverse-interactive)'
-                              : '1px solid transparent',
-                          }}
-                        >
-                          <span>{cat}</span>
-                          <span
-                            className="h-2 w-2 rounded-full"
-                            style={{
-                              backgroundColor: isActive
-                                ? 'var(--accent\\/default)'
-                                : 'transparent',
-                            }}
-                          />
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Right Column: 4 Feelings for Active Tempo */}
-                  <div className="flex flex-col justify-between md:col-span-7">
-                    <div>
-                      <span
-                        className="mb-2.5 block text-[11px] tracking-[0.18em] uppercase"
-                        style={{ color: 'var(--text\\/inverse-muted)' }}
-                      >
-                        2. Select Feeling
+                    <div className="flex items-center gap-2 text-xs tracking-wider uppercase">
+                      <span style={{ color: 'var(--accent\\/inverse-eyebrow)' }}>
+                        Selected Rhythm:
                       </span>
-                      <div className="grid grid-cols-2 gap-2.5">
-                        {LAB_CATEGORIES[category].tags.map((tag, idx) => {
-                          const isSelected = feelingIdx === idx;
-                          return (
-                            <button
-                              key={tag}
-                              type="button"
-                              onClick={() => setFeelingIdx(idx)}
-                              className={`lab-pill-primary cursor-pointer rounded-full border px-4 py-2.5 text-center text-sm tracking-wide ${
-                                isSelected ? 'lab-pill-primary--selected font-medium' : ''
-                              }`}
-                              style={{
-                                color: isSelected
-                                  ? 'var(--text\\/on-accent)'
-                                  : 'var(--text\\/inverse)',
-                                borderColor: isSelected
-                                  ? 'var(--accent\\/default)'
-                                  : 'var(--border\\/inverse-interactive)',
-                                backgroundColor: isSelected
-                                  ? 'var(--accent\\/default)'
-                                  : 'var(--surface\\/glass-subtle)',
-                              }}
-                            >
-                              {tag}
-                            </button>
-                          );
-                        })}
-                      </div>
+                      <span className="font-medium" style={{ color: 'var(--text\\/inverse)' }}>
+                        {category} · {LAB_CATEGORIES[category].tags[feelingIdx]}
+                      </span>
                     </div>
-
-                    <p
-                      className="mt-4 text-xs"
+                    <button
+                      type="button"
+                      tabIndex={expanded ? 0 : -1}
+                      onClick={() => setExpanded(false)}
+                      className="cursor-pointer text-xs tracking-wide transition-colors"
                       style={{ color: 'var(--text\\/inverse-secondary)' }}
                     >
-                      Mirrors the mobile dual-wheel hierarchy while keeping all options visible at a
-                      glance on desktop.
-                    </p>
+                      Collapse ✕
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
+                    {/* Left Column: 5 Tempo Categories */}
+                    <div
+                      className="flex flex-col space-y-1.5 md:col-span-5 md:border-r md:pr-5"
+                      style={{ borderColor: 'var(--border\\/inverse-divider)' }}
+                    >
+                      <span
+                        className="mb-1 px-3 text-[11px] tracking-[0.18em] uppercase"
+                        style={{ color: 'var(--text\\/inverse-muted)' }}
+                      >
+                        1. Choose Tempo
+                      </span>
+                      {CATEGORY_KEYS.map((cat) => {
+                        const isActive = category === cat;
+                        return (
+                          <button
+                            key={cat}
+                            type="button"
+                            tabIndex={expanded ? 0 : -1}
+                            onClick={() => {
+                              setCategory(cat);
+                              setFeelingIdx(0);
+                            }}
+                            className={`lab-drawer-row flex w-full cursor-pointer items-center justify-between rounded-full px-4 py-2 text-left text-sm ${
+                              isActive ? 'lab-drawer-row--active font-medium' : 'font-normal'
+                            }`}
+                            style={{
+                              color: 'var(--text\\/inverse)',
+                              backgroundColor: isActive
+                                ? 'var(--surface\\/glass-picker)'
+                                : 'transparent',
+                              border: isActive
+                                ? '1px solid var(--border\\/inverse-interactive)'
+                                : '1px solid transparent',
+                            }}
+                          >
+                            <span>{cat}</span>
+                            <span
+                              className="h-2 w-2 rounded-full"
+                              style={{
+                                backgroundColor: isActive
+                                  ? 'var(--accent\\/default)'
+                                  : 'transparent',
+                              }}
+                            />
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Right Column: 4 Feelings for Active Tempo */}
+                    <div className="flex flex-col justify-between md:col-span-7">
+                      <div>
+                        <span
+                          className="mb-2.5 block text-[11px] tracking-[0.18em] uppercase"
+                          style={{ color: 'var(--text\\/inverse-muted)' }}
+                        >
+                          2. Select Feeling
+                        </span>
+                        <div className="grid grid-cols-2 gap-2.5">
+                          {LAB_CATEGORIES[category].tags.map((tag, idx) => {
+                            const isSelected = feelingIdx === idx;
+                            return (
+                              <button
+                                key={tag}
+                                type="button"
+                                tabIndex={expanded ? 0 : -1}
+                                onClick={() => setFeelingIdx(idx)}
+                                className={`lab-pill-primary cursor-pointer rounded-full border px-4 py-2.5 text-center text-sm tracking-wide ${
+                                  isSelected ? 'lab-pill-primary--selected font-medium' : ''
+                                }`}
+                                style={{
+                                  color: isSelected
+                                    ? 'var(--text\\/on-accent)'
+                                    : 'var(--text\\/inverse)',
+                                  borderColor: isSelected
+                                    ? 'var(--accent\\/default)'
+                                    : 'var(--border\\/inverse-interactive)',
+                                  backgroundColor: isSelected
+                                    ? 'var(--accent\\/default)'
+                                    : 'var(--surface\\/glass-subtle)',
+                                }}
+                              >
+                                {tag}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <p
+                        className="mt-4 text-xs"
+                        style={{ color: 'var(--text\\/inverse-secondary)' }}
+                      >
+                        Mirrors the mobile dual-wheel hierarchy while keeping all options visible at
+                        a glance on desktop.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            )}
+            </div>
 
-            <div className="mt-7">
+            <div className="mt-6">
               <Button
                 variant="ghost"
                 size="lg"
