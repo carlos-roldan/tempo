@@ -81,6 +81,7 @@
 
   /* Editorial Typography Tokens */
   --font\/serif: 'Cormorant Garamond', serif;
+  --font-display: var(--font\/serif);
   --font\/sans: 'DM Sans', sans-serif;
   --tracking\/tight: -0.025em;
   --tracking\/wide: 0.025em;

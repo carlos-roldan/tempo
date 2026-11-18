@@ -9,7 +9,8 @@ import { EmailCapture } from './components/EmailCapture';
 import { FullScreenVideoModal } from './components/FullScreenVideoModal';
 
 const BRAND_FILM_SRC = '/assets/tempo-brand-film.mp4';
-const IBERIAN_JOURNEY_SRC = '/assets/iberian-journey.mp4';
+const IBERIAN_JOURNEY_SRC = '/iberian-journey-flow.mp4';
+const IBERIAN_JOURNEY_AUDIO_SRC = '/iberian-journey-audio.mp3';
 
 export default function App() {
   const [modalVideoSrc, setModalVideoSrc] = useState<string | null>(null);
@@ -25,23 +26,18 @@ export default function App() {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setModalVideoSrc(null);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isModalOpen]);
 
   useEffect(() => {
     const video = modalVideoRef.current;
     if (!video) return;
+    if (modalVideoSrc === IBERIAN_JOURNEY_SRC) {
+      video.muted = true;
+      return;
+    }
     video.muted = isMuted;
   }, [isMuted, isModalOpen, modalVideoSrc]);
 
@@ -78,6 +74,8 @@ export default function App() {
       {modalVideoSrc && (
         <FullScreenVideoModal
           src={modalVideoSrc}
+          audioSrc={modalVideoSrc === IBERIAN_JOURNEY_SRC ? IBERIAN_JOURNEY_AUDIO_SRC : undefined}
+          variant={modalVideoSrc === IBERIAN_JOURNEY_SRC ? 'iberian-choreography' : 'standard'}
           onClose={handleCloseModal}
           videoRef={modalVideoRef}
           isMuted={isMuted}
