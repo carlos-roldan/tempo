@@ -54,6 +54,9 @@ export function FullScreenVideoModal({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [isMobileViewport, setIsMobileViewport] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < 640
+  );
 
   const isPausedRef = useRef(false);
   const elapsedRef = useRef(0);
@@ -67,6 +70,13 @@ export function FullScreenVideoModal({
   const [tempoCenterShiftPx, setTempoCenterShiftPx] = useState(0);
 
   const measureTempoCenterShift = useCallback(() => {
+    const mobile = typeof window !== 'undefined' && window.innerWidth < 640;
+    setIsMobileViewport(mobile);
+    if (mobile) {
+      setTempoCenterShiftPx(0);
+      return;
+    }
+
     const container = phrase2ContainerRef.current;
     const tempoEl = tempoSpanRef.current;
     if (container && tempoEl) {
@@ -74,7 +84,6 @@ export function FullScreenVideoModal({
       const tempoRect = tempoEl.getBoundingClientRect();
       if (containerRect.width > 0 && tempoRect.width > 0) {
         const containerCenterX = containerRect.left + containerRect.width / 2;
-        // Neutralize any currently applied translateX when measuring natural offset
         const styleTransform = tempoEl.style.transform;
         const match = styleTransform.match(/translate3d\(([-\d.]+)px/);
         const currentShift = match ? Number(match[1]) : 0;
@@ -367,7 +376,10 @@ export function FullScreenVideoModal({
   // "tempo." glide progress into dead center: 9.0s -> 10.8s
   const tempoGlideProgress =
     t < 9.0 ? 0 : easeInOutCubic(clamp01((t - 9.0) / 1.8));
-  const tempoTranslateX = tempoGlideProgress * tempoCenterShiftPx;
+  const tempoTranslateX = isMobileViewport
+    ? 0
+    : tempoGlideProgress * tempoCenterShiftPx;
+  const tempoTranslateYEm = isMobileViewport ? -0.55 * tempoGlideProgress : 0;
 
   // "tempo." subtle warm glow: rises as it glides to center (9.0s -> 10.6s), holds until 12.8s
   const tempoGlowStrength =
@@ -387,7 +399,7 @@ export function FullScreenVideoModal({
 
   const heroDisplayTypographyStyle = {
     fontFamily: 'var(--font-display, var(--font\\/serif))',
-    fontSize: 'clamp(1.75rem, 5.8vw, 4.5rem)',
+    fontSize: 'clamp(2.15rem, 8.5vw, 4.5rem)',
     lineHeight: 1.15,
     color: 'var(--text\\/inverse)',
   } as const;
@@ -488,7 +500,7 @@ export function FullScreenVideoModal({
                 <div className="overflow-hidden py-6 text-center mx-auto w-full max-w-[90vw] px-6">
                   <h1
                     id="iberian-phrase-1"
-                    className="font-medium text-center text-balance mx-auto will-change-transform"
+                    className="font-medium text-center mx-auto will-change-transform"
                     style={{
                       ...heroDisplayTypographyStyle,
                       opacity: phrase1DissolveOpacity,
@@ -498,7 +510,9 @@ export function FullScreenVideoModal({
                         '0 2px 14px rgba(0, 0, 0, 0.55), 0 8px 36px rgba(12, 9, 7, 0.65)',
                     }}
                   >
-                    What rhythm are you seeking?
+                    <span className="block sm:inline">What rhythm</span>
+                    <span className="hidden sm:inline">{' '}</span>
+                    <span className="block sm:inline">are you seeking?</span>
                   </h1>
                 </div>
               )}
@@ -515,7 +529,7 @@ export function FullScreenVideoModal({
                 <h1
                   ref={phrase2ContainerRef}
                   id="iberian-phrase-2"
-                  className=" flex flex-wrap items-baseline justify-center whitespace-nowrap font-medium text-center mx-auto will-change-transform"
+                  className="flex flex-col sm:flex-row items-center sm:items-baseline justify-center sm:whitespace-nowrap font-medium text-center mx-auto will-change-transform"
                   style={{
                     ...heroDisplayTypographyStyle,
                     transform: `translate3d(0, ${phrase2TranslateY.toFixed(2)}%, 0)`,
@@ -525,7 +539,7 @@ export function FullScreenVideoModal({
                   <span
                     ref={prefixMeasureRef}
                     id="iberian-phrase-2-prefix"
-                    className="inline-block whitespace-pre will-change-opacity"
+                    className="block sm:inline-block sm:whitespace-pre will-change-opacity"
                     style={{
                       opacity: prefixOpacity,
                       filter:
@@ -534,15 +548,18 @@ export function FullScreenVideoModal({
                           : 'none',
                     }}
                   >
-                    {'Return to your '}
+                    <span>Return to your</span>
+                    <span className="hidden sm:inline">{' '}</span>
                   </span>
                   <span
                     ref={tempoSpanRef}
                     id="iberian-phrase-2-tempo"
-                    className="inline-block will-change-transform"
+                    className="block sm:inline-block will-change-transform"
                     style={{
                       opacity: tempoOpacity,
-                      transform: `translate3d(${tempoTranslateX.toFixed(2)}px, 0, 0)`,
+                      transform: isMobileViewport
+                        ? `translate3d(0, ${tempoTranslateYEm.toFixed(4)}em, 0)`
+                        : `translate3d(${tempoTranslateX.toFixed(2)}px, 0, 0)`,
                       textShadow:
                         tempoGlowStrength > 0
                           ? `0 0 ${(24 * tempoGlowStrength).toFixed(1)}px rgba(240, 201, 107, ${(0.45 * tempoGlowStrength).toFixed(3)}), 0 0 ${(52 * tempoGlowStrength).toFixed(1)}px rgba(201, 151, 58, ${(0.26 * tempoGlowStrength).toFixed(3)})`
