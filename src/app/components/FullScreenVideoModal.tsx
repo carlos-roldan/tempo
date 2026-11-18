@@ -61,26 +61,48 @@ export function FullScreenVideoModal({
   const rafIdRef = useRef<number | null>(null);
   const hasClosedRef = useRef(false);
 
+  const phrase2ContainerRef = useRef<HTMLHeadingElement | null>(null);
+  const tempoSpanRef = useRef<HTMLSpanElement | null>(null);
   const prefixMeasureRef = useRef<HTMLSpanElement | null>(null);
   const [tempoCenterShiftPx, setTempoCenterShiftPx] = useState(0);
 
-  const measurePrefixWidth = useCallback(() => {
-    if (!prefixMeasureRef.current) return;
-    const prefixWidth = prefixMeasureRef.current.getBoundingClientRect().width;
-    setTempoCenterShiftPx(-prefixWidth / 2);
+  const measureTempoCenterShift = useCallback(() => {
+    const container = phrase2ContainerRef.current;
+    const tempoEl = tempoSpanRef.current;
+    if (container && tempoEl) {
+      const containerRect = container.getBoundingClientRect();
+      const tempoRect = tempoEl.getBoundingClientRect();
+      if (containerRect.width > 0 && tempoRect.width > 0) {
+        const containerCenterX = containerRect.left + containerRect.width / 2;
+        // Neutralize any currently applied translateX when measuring natural offset
+        const styleTransform = tempoEl.style.transform;
+        const match = styleTransform.match(/translate3d\(([-\d.]+)px/);
+        const currentShift = match ? Number(match[1]) : 0;
+        const naturalTempoCenterX =
+          tempoRect.left - currentShift + tempoRect.width / 2;
+        setTempoCenterShiftPx(containerCenterX - naturalTempoCenterX);
+        return;
+      }
+    }
+    if (prefixMeasureRef.current) {
+      const prefixWidth = prefixMeasureRef.current.getBoundingClientRect().width;
+      setTempoCenterShiftPx(-prefixWidth / 2);
+    }
   }, []);
 
   useLayoutEffect(() => {
     if (!isIberian) return undefined;
-    measurePrefixWidth();
-    window.addEventListener('resize', measurePrefixWidth);
+    measureTempoCenterShift();
+    window.addEventListener('resize', measureTempoCenterShift);
+    window.addEventListener('orientationchange', measureTempoCenterShift);
     if (document.fonts?.ready) {
-      void document.fonts.ready.then(measurePrefixWidth);
+      void document.fonts.ready.then(measureTempoCenterShift);
     }
     return () => {
-      window.removeEventListener('resize', measurePrefixWidth);
+      window.removeEventListener('resize', measureTempoCenterShift);
+      window.removeEventListener('orientationchange', measureTempoCenterShift);
     };
-  }, [isIberian, measurePrefixWidth]);
+  }, [isIberian, measureTempoCenterShift]);
 
   // Dynamic volume & envelope computation for Iberian audio track (14.0s timeline)
   const computeIberianAudioVolume = useCallback(
@@ -315,7 +337,7 @@ export function FullScreenVideoModal({
         ? clamp01((t - 0.8) / 0.4)
         : 1 - easeInOutCubic(clamp01((t - 3.4) / (4.2 - 3.4)));
   const phrase1TranslateY = (1 - phrase1RiseProgress) * 100;
-  const phrase1LetterSpacingEm = 0.04 - phrase1SettleProgress * 0.025; // settles from 0.04em -> 0.015em
+  const phrase1LetterSpacingEm = 0.035 - phrase1SettleProgress * 0.025; // settles from 0.035em -> 0.010em
 
   // 3) Second phrase: "Return to your tempo."
   //    4.6s - 8.8s: on pure #000000, reveal "Return to your tempo." with editorial vertical rise
@@ -325,7 +347,14 @@ export function FullScreenVideoModal({
   const phrase2RiseProgress = t < 4.6 ? 0 : easeOutExpo(clamp01((t - 4.6) / 1.15));
   const phrase2SettleProgress = t < 4.6 ? 0 : easeOutExpo(clamp01((t - 4.6) / 2.1));
   const phrase2TranslateY = (1 - phrase2RiseProgress) * 100;
-  const phrase2LetterSpacingEm = 0.04 - phrase2SettleProgress * 0.025;
+  const phrase2LetterSpacingEm = 0.035 - phrase2SettleProgress * 0.025;
+
+  // Re-measure natural alignment right when phrase 2 enters before glide begins
+  useLayoutEffect(() => {
+    if (isIberian && phrase2Visible && t < 9.0) {
+      measureTempoCenterShift();
+    }
+  }, [isIberian, phrase2Visible, t < 9.0, measureTempoCenterShift]);
 
   // Prefix ("Return to your ") opacity: dissolves between 9.0s and 10.3s
   const prefixOpacity =
@@ -358,8 +387,8 @@ export function FullScreenVideoModal({
 
   const heroDisplayTypographyStyle = {
     fontFamily: 'var(--font-display, var(--font\\/serif))',
-    fontSize: 'clamp(2.75rem, 5.5vw, 4.75rem)',
-    lineHeight: 1.1,
+    fontSize: 'clamp(1.75rem, 5.8vw, 4.5rem)',
+    lineHeight: 1.15,
     color: 'var(--text\\/inverse)',
   } as const;
 
@@ -370,15 +399,18 @@ export function FullScreenVideoModal({
       style={{ backgroundColor: 'var(--bg\\/black)' }}
       onClick={onClose}
     >
-      {/* Close (×) Button */}
+      {/* Close (×) Button with Safe-Area Inset Top */}
       <button
         id="video-modal-close-btn"
         type="button"
         aria-label="Close video modal"
         onClick={onClose}
         onTouchEnd={onClose}
-        className="absolute top-6 right-6 z-[150] leading-none cursor-pointer pointer-events-auto transition-opacity hover:opacity-80"
-        style={{ color: 'var(--text\\/inverse)' }}
+        className="absolute right-6 z-[150] leading-none cursor-pointer pointer-events-auto transition-opacity hover:opacity-80 p-2"
+        style={{
+          color: 'var(--text\\/inverse)',
+          top: 'calc(1.5rem + env(safe-area-inset-top, 0px))',
+        }}
       >
         <svg
           viewBox="0 0 24 24"
@@ -402,7 +434,11 @@ export function FullScreenVideoModal({
           key={src}
           ref={videoRef}
           autoPlay
-          className="w-full h-full object-contain lg:object-cover"
+          className={
+            isIberian
+              ? 'w-full h-full object-cover object-center'
+              : 'w-full h-full object-contain lg:object-cover'
+          }
           muted={isIberian ? true : isMuted}
           playsInline
           src={src}
@@ -420,7 +456,7 @@ export function FullScreenVideoModal({
 
         {isIberian && (
           <>
-            {/* 0.0s - 3.9s: Subtle Radial Vignette Scrim over Walking-Path Video */}
+            {/* 0.0s - 3.9s: Subtle Radial Vignette Scrim over Full-Bleed Walking-Path Video */}
             <div
               id="iberian-radial-vignette"
               aria-hidden="true"
@@ -445,14 +481,14 @@ export function FullScreenVideoModal({
             {/* Editorial Typography Choreography Layer */}
             <div
               id="iberian-typography-stage"
-              className="absolute inset-0 z-[120] flex items-center justify-center px-6 pointer-events-none"
+              className="absolute inset-0 z-[120] flex items-center justify-center pointer-events-none"
             >
               {/* Phrase 1 (0.8s – 4.2s): "What rhythm are you seeking?" */}
               {phrase1Visible && (
-                <div className="overflow-hidden py-6 px-4 text-center">
+                <div className="overflow-hidden py-6 text-center mx-auto w-full max-w-[90vw] px-6">
                   <h1
                     id="iberian-phrase-1"
-                    className="font-medium will-change-transform"
+                    className="font-medium text-center text-balance mx-auto will-change-transform"
                     style={{
                       ...heroDisplayTypographyStyle,
                       opacity: phrase1DissolveOpacity,
@@ -469,15 +505,17 @@ export function FullScreenVideoModal({
 
               {/* Phrase 2 (4.6s – 14.0s): "Return to your tempo." -> "tempo." */}
               <div
-                className="overflow-hidden py-8 px-4 text-center"
+                className="overflow-hidden py-8 text-center mx-auto w-full max-w-[90vw] px-6"
                 style={{
+                  display: phrase1Visible ? 'none' : 'block',
                   visibility: phrase2Visible ? 'visible' : 'hidden',
                   pointerEvents: 'none',
                 }}
               >
                 <h1
+                  ref={phrase2ContainerRef}
                   id="iberian-phrase-2"
-                  className="inline-flex items-baseline whitespace-pre font-medium will-change-transform"
+                  className=" flex flex-wrap items-baseline justify-center whitespace-nowrap font-medium text-center mx-auto will-change-transform"
                   style={{
                     ...heroDisplayTypographyStyle,
                     transform: `translate3d(0, ${phrase2TranslateY.toFixed(2)}%, 0)`,
@@ -487,7 +525,7 @@ export function FullScreenVideoModal({
                   <span
                     ref={prefixMeasureRef}
                     id="iberian-phrase-2-prefix"
-                    className="inline-block will-change-opacity"
+                    className="inline-block whitespace-pre will-change-opacity"
                     style={{
                       opacity: prefixOpacity,
                       filter:
@@ -499,6 +537,7 @@ export function FullScreenVideoModal({
                     {'Return to your '}
                   </span>
                   <span
+                    ref={tempoSpanRef}
                     id="iberian-phrase-2-tempo"
                     className="inline-block will-change-transform"
                     style={{
@@ -519,11 +558,14 @@ export function FullScreenVideoModal({
         )}
       </div>
 
-      {/* Bottom Control Pill: Play/Pause + Mute + Volume Slider */}
+      {/* Bottom Control Pill: Play/Pause + Mute + Volume Slider with Safe-Area Inset Bottom */}
       <div
         id="video-modal-controls-pill"
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[140] flex items-center gap-3 px-4 py-2 rounded-full backdrop-blur-md"
-        style={{ backgroundColor: 'var(--surface\\/video-controls)' }}
+        className="absolute left-1/2 -translate-x-1/2 z-[140] flex items-center gap-3 px-4 py-2 rounded-full backdrop-blur-md"
+        style={{
+          backgroundColor: 'var(--surface\\/video-controls)',
+          bottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))',
+        }}
         onClick={(event) => event.stopPropagation()}
       >
         <button
